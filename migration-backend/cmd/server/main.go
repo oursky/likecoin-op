@@ -21,6 +21,7 @@ import (
 	"github.com/likecoin/like-migration-backend/pkg/handler/likenft"
 	"github.com/likecoin/like-migration-backend/pkg/handler/user"
 	likecoin_api "github.com/likecoin/like-migration-backend/pkg/likecoin/api"
+	"github.com/likecoin/like-migration-backend/pkg/likenft/cosmos"
 )
 
 func main() {
@@ -68,6 +69,13 @@ func main() {
 		},
 	}
 
+	likenftCosmosClient := &cosmos.LikeNFTCosmosClient{
+		HTTPClient: &http.Client{
+			Timeout: 5 * time.Second,
+		},
+		NodeURL: envCfg.CosmosNodeUrl,
+	}
+
 	mainMux.Handle("/healthz", &handler.HealthzHandler{})
 	mainMux.Handle("/init_likecoin_migration_from_cosmos", &handler.InitLikeCoinMigrationFromCosmosHandler{
 		Db:                     db,
@@ -82,7 +90,9 @@ func main() {
 		EthClient: client,
 	})
 	likeNFTRouter := likenft.LikeNFTRouter{
-		Db: db,
+		LikerlandUrlBase:    envCfg.LikerlandUrlBase,
+		Db:                  db,
+		LikeNFTCosmosClient: likenftCosmosClient,
 	}
 	mainMux.Handle("/likenft/", http.StripPrefix("/likenft", likeNFTRouter.Router()))
 

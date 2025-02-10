@@ -3,10 +3,14 @@ package likenft
 import (
 	"database/sql"
 	"net/http"
+
+	"github.com/likecoin/like-migration-backend/pkg/likenft/cosmos"
 )
 
 type LikeNFTRouter struct {
-	Db *sql.DB
+	LikerlandUrlBase    string
+	Db                  *sql.DB
+	LikeNFTCosmosClient *cosmos.LikeNFTCosmosClient
 }
 
 func (h *LikeNFTRouter) Router() *http.ServeMux {
@@ -16,6 +20,10 @@ func (h *LikeNFTRouter) Router() *http.ServeMux {
 		Db: h.Db,
 	})
 	router.Handle("POST /likerid/migration", &LikerIDMigrationHandler{})
+	router.Handle("GET /migration/", &GetMigrationHandler{
+		LikerlandUrlBase:    h.LikerlandUrlBase,
+		LikeNFTCosmosClient: h.LikeNFTCosmosClient,
+	})
 
 	return router
 }
