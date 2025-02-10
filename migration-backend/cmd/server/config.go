@@ -13,6 +13,7 @@ type EnvConfig struct {
 	EthTokenAddress        string `envconfig:"ETH_TOKEN_ADDRESS"`
 	DbConnectionStr        string `envconfig:"DB_CONNECTION_STR"`
 	LikecoinAPIUrlBase     string `envconfig:"LIKECOIN_API_URL_BASE"`
+	LikerlandUrlBase       string `envconfig:"LIKERLAND_URL_BASE"`
 }
 
 func LoadEnvConfigFromEnv() (*EnvConfig, error) {
