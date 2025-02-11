@@ -42,6 +42,43 @@ FROM nft_signing_message WHERE cosmos_address = $1`, cosmosAddress)
 	return nftSigningMessage, nil
 }
 
+func QueryNFTSigningMessageByCosmosAddressAndEthAddress(
+	tx TxLike,
+	cosmosAddress string,
+	ethAddress string,
+) (*model.NFTSigningMessage, error) {
+	row := tx.QueryRow(
+		`SELECT
+	id,
+	created_at,
+	cosmos_address,
+	liker_id,
+	eth_address,
+	nonce,
+	issue_time,
+	message
+FROM nft_signing_message WHERE cosmos_address = $1 AND eth_address = $2`, cosmosAddress, ethAddress)
+
+	nftSigningMessage := &model.NFTSigningMessage{}
+
+	err := row.Scan(
+		&nftSigningMessage.Id,
+		&nftSigningMessage.CreatedAt,
+		&nftSigningMessage.CosmosAddress,
+		&nftSigningMessage.LikerID,
+		&nftSigningMessage.EthAddress,
+		&nftSigningMessage.Nonce,
+		&nftSigningMessage.IssueTime,
+		&nftSigningMessage.Message,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return nftSigningMessage, nil
+}
+
 func InsertNFTSigningMessage(
 	tx TxLike,
 	nftSigningMessage *model.NFTSigningMessage,
