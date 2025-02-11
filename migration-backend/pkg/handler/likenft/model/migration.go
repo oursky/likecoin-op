@@ -24,9 +24,9 @@ type Class struct {
 	LikerlandUrl string               `json:"likerland_url"`
 	Image        string               `json:"image"`
 	Status       ClassMigrationStatus `json:"status"`
-	EnqueuedTime time.Time            `json:"enqueued_time,omitempty"`
-	EVMTxHash    string               `json:"evm_tx_hash,omitempty"`
-	FailedReason string               `json:"failed_reason,omitempty"`
+	EnqueuedTime *time.Time           `json:"enqueued_time"`
+	EVMTxHash    *string              `json:"evm_tx_hash"`
+	FailedReason *string              `json:"failed_reason"`
 }
 
 type ClassMigrationStatus string
@@ -46,9 +46,9 @@ type NFT struct {
 	LikerlandUrl string             `json:"likerland_url"`
 	Image        string             `json:"image"`
 	Status       NFTMigrationStatus `json:"status"`
-	EnqueuedTime time.Time          `json:"enqueued_time,omitempty"`
-	EVMTxHash    string             `json:"evm_tx_hash,omitempty"`
-	FailedReason string             `json:"failed_reason,omitempty"`
+	EnqueuedTime *time.Time         `json:"enqueued_time"`
+	EVMTxHash    *string            `json:"evm_tx_hash"`
+	FailedReason *string            `json:"failed_reason"`
 }
 
 type NFTMigrationStatus string
