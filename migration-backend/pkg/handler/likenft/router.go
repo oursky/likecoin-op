@@ -21,6 +21,7 @@ func (h *LikeNFTRouter) Router() *http.ServeMux {
 	})
 	router.Handle("POST /likerid/migration", &LikerIDMigrationHandler{})
 	router.Handle("GET /migration/", &GetMigrationHandler{
+		Db:                  h.Db,
 		LikerlandUrlBase:    h.LikerlandUrlBase,
 		LikeNFTCosmosClient: h.LikeNFTCosmosClient,
 	})
