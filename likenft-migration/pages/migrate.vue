@@ -21,10 +21,42 @@
           cosmosWalletAddress != null &&
           evmWalletAddress != null
         "
-        @click="handleMigrateClick"
+        @click="handleMigrateLikerIDClick"
       >
-        {{ $t('migrate.migrate') }}
+        {{ $t('migrate.migrate-likerid') }}
       </primary-button>
+      <div
+        v-if="
+          migration &&
+          (migration.classes.length > 0 || migration.nfts.length > 0)
+        "
+        class="w-full"
+      >
+        <div class="max-h-40 overflow-auto">
+          <div v-if="migration.classes.length > 0">
+            <h5>{{ $t('migrate.classes') }}</h5>
+            <ol class="list-decimal pl-10">
+              <li v-for="c in migration.classes" :key="c.id">
+                <a :href="c.likerland_url">{{ c.name }}</a>
+              </li>
+            </ol>
+          </div>
+          <div v-if="migration.nfts.length > 0">
+            <h5>{{ $t('migrate.nfts') }}</h5>
+            <ol class="list-decimal pl-10">
+              <li v-for="n in migration.nfts" :key="n.class_id + '/' + n.id">
+                <a :href="n.likerland_url">{{ n.name }}({{ n.id }})</a>
+              </li>
+            </ol>
+          </div>
+        </div>
+        <primary-button
+          v-if="migration.status === 'preview'"
+          class="mt-8"
+          @click="handleMigrateAssetsClick"
+          >{{ $t('migrate.migrate-assets') }}</primary-button
+        >
+      </div>
     </main>
     <div
       v-if="isLoading"
@@ -46,9 +78,12 @@ import Vue from 'vue';
 import Web3 from 'web3';
 import { z } from 'zod';
 
+import { makeCreateMigrationAPI } from '~/apis/createMigration';
+import { makeGetMigrationAPI } from '~/apis/getMigration';
 import { getSignMessage } from '~/apis/getSignMessage';
 import { makeGetUserProfileAPI } from '~/apis/getUserProfile';
 import { makeMigrateLikerIDAPI } from '~/apis/migrateLikerID';
+import { Migration } from '~/apis/models/migration';
 import { LIKECOIN_WALLET_CONNECTOR_CONFIG } from '~/constant/network';
 
 async function getEthereumAccount(
@@ -83,6 +118,7 @@ interface Data {
   likerID: string | null;
   evmWalletAddress: string | null;
   isEthAddressMigrated: boolean;
+  migration: Migration | null;
   isLoading: boolean;
 }
 
@@ -93,6 +129,7 @@ export default Vue.extend({
       likerID: null,
       evmWalletAddress: null,
       isEthAddressMigrated: false,
+      migration: null,
       isLoading: false,
     };
   },
@@ -136,6 +173,9 @@ export default Vue.extend({
           this.likerID = userProfile.user_profile.liker_id;
           this.evmWalletAddress = userProfile.user_profile.eth_wallet_address;
           this.isEthAddressMigrated = this.evmWalletAddress != null;
+          if (this.isEthAddressMigrated) {
+            await this.fetchMigration(this.cosmosWalletAddress);
+          }
         } finally {
           this.isLoading = false;
         }
@@ -157,6 +197,9 @@ export default Vue.extend({
       }
       try {
         this.evmWalletAddress = await getEthereumAccount(window.ethereum);
+        if (this.cosmosWalletAddress != null) {
+          await this.fetchMigration(this.cosmosWalletAddress);
+        }
       } catch (e) {
         console.error(e);
       } finally {
@@ -164,7 +207,7 @@ export default Vue.extend({
       }
     },
 
-    async handleMigrateClick() {
+    async handleMigrateLikerIDClick() {
       const S = z.object({
         cosmosWalletAddress: z.string(),
         evmWalletAddress: z.string(),
@@ -221,8 +264,31 @@ export default Vue.extend({
           signing_message: signMessage.message,
         });
       }
+    },
 
-      this.$router.push(`/migration-preview/${s.data.cosmosWalletAddress}`);
+    async fetchMigration(cosmosWalletAddress: string) {
+      const migrationResponse = await makeGetMigrationAPI(cosmosWalletAddress)(
+        this.$apiClient
+      )();
+      this.migration = migrationResponse.migration;
+    },
+
+    async handleMigrateAssetsClick() {
+      if (this.evmWalletAddress == null || this.cosmosWalletAddress == null) {
+        return;
+      }
+      this.isLoading = true;
+      try {
+        const createMigrationResponse = await makeCreateMigrationAPI(
+          this.$apiClient
+        )({
+          cosmos_address: this.cosmosWalletAddress,
+          eth_address: this.evmWalletAddress,
+        });
+        this.migration = createMigrationResponse.migration;
+      } finally {
+        this.isLoading = false;
+      }
     },
   },
 });

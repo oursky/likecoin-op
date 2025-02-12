@@ -3,11 +3,14 @@
     "get-started": ""
   },
   "migrate": {
+    "classes": "",
     "connect-cosmos-wallet": "",
     "connect-evm-wallet": "",
     "cosmos-wallet-address": "",
     "evm-wallet-address": "",
     "liker-id": "",
-    "migrate": ""
+    "migrate-assets": "",
+    "migrate-likerid": "",
+    "nfts": ""
   }
 }
