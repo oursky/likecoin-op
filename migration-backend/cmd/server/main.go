@@ -18,6 +18,7 @@ import (
 
 	"github.com/likecoin/like-migration-backend/pkg/cosmos/api"
 	"github.com/likecoin/like-migration-backend/pkg/handler"
+	"github.com/likecoin/like-migration-backend/pkg/handler/internal_api"
 	"github.com/likecoin/like-migration-backend/pkg/handler/likenft"
 	"github.com/likecoin/like-migration-backend/pkg/handler/user"
 	likecoin_api "github.com/likecoin/like-migration-backend/pkg/likecoin/api"
@@ -100,6 +101,11 @@ func main() {
 		LikecoinAPI: likecoinAPI,
 	}
 	mainMux.Handle("/user/", http.StripPrefix("/user", userRouter.Router()))
+
+	internalRouter := internal_api.InternalRouter{
+		Db: db,
+	}
+	mainMux.Handle("/internal/", http.StripPrefix("/internal", internalRouter.Router()))
 
 	routePrefixMux.Handle(fmt.Sprintf("%s/", envCfg.RoutePrefix), http.StripPrefix(envCfg.RoutePrefix, mainMux))
 
