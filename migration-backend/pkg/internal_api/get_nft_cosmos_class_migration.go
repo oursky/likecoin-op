@@ -3,6 +3,7 @@ package internal_api
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 
 	"github.com/likecoin/like-migration-backend/pkg/model"
 )
@@ -13,9 +14,13 @@ type GetCosmosClassMigrationResponseBody struct {
 }
 
 func (a *InternalAPI) GetNFTCosmosClassMigration(cosmosClassId string) (*model.NFTCosmosClassMigration, error) {
-	resp, err := a.HTTPClient.Get(
-		fmt.Sprintf("%s/internal/nft-cosmos-class-migration/%s", a.APIUrlBase, cosmosClassId),
-	)
+	request, err := http.NewRequest("GET",
+		fmt.Sprintf("%s/internal/nft-cosmos-class-migration/%s", a.APIUrlBase, cosmosClassId), nil)
+	if err != nil {
+		return nil, err
+	}
+	a.attachAPIKey(request)
+	resp, err := a.HTTPClient.Do(request)
 	if err != nil {
 		return nil, err
 	}

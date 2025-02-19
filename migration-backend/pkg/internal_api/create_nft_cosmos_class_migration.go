@@ -29,6 +29,7 @@ func (a *InternalAPI) CreateNFTCosmosClassMigration(m *CreateCosmosClassMigratio
 	if err != nil {
 		return nil, err
 	}
+	a.attachAPIKey(request)
 	resp, err := a.HTTPClient.Do(request)
 	if err != nil {
 		return nil, err

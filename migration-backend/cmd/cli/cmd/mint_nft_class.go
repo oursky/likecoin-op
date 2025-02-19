@@ -56,7 +56,8 @@ var mintNFTClassCmd = &cobra.Command{
 			HTTPClient: &http.Client{
 				Timeout: 5 * time.Second,
 			},
-			APIUrlBase: "http://localhost:8091",
+			APIUrlBase: envCfg.InternalAPIUrlBase,
+			APIKey:     envCfg.InternalAPIKey,
 		}
 
 		cosmosClassId := args[0]
