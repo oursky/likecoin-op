@@ -19,6 +19,8 @@ type EnvConfig struct {
 	EthLikeNFTContractAddress string   `envconfig:"ETH_LIKENFT_CONTRACT_ADDRESS"`
 	DbConnectionStr           string   `envconfig:"DB_CONNECTION_STR"`
 	LikerlandUrlBase          string   `envconfig:"LIKERLAND_URL_BASE"`
+	InternalAPIUrlBase        string   `envconfig:"INTERNAL_API_URL_BASE" default:"http://0.0.0.0:8091"`
+	InternalAPIKey            string   `envconfig:"INTERNAL_API_KEY"`
 }
 
 func LoadEnvConfigFromEnv() (*EnvConfig, error) {
