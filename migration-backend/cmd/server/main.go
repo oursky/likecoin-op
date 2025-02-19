@@ -105,7 +105,7 @@ func main() {
 	internalRouter := internal_api.InternalRouter{
 		Db: db,
 	}
-	mainMux.Handle("/internal/", http.StripPrefix("/internal", internalRouter.Router()))
+	mainMux.Handle("/internal/", internal_api.InternalAPIMiddleware(envCfg.InternalAPIKey, http.StripPrefix("/internal", internalRouter.Router())))
 
 	routePrefixMux.Handle(fmt.Sprintf("%s/", envCfg.RoutePrefix), http.StripPrefix(envCfg.RoutePrefix, mainMux))
 
