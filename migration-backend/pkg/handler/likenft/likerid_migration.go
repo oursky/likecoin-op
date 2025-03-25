@@ -6,18 +6,19 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/likecoin/like-migration-backend/pkg/cosmos"
 	"github.com/likecoin/like-migration-backend/pkg/ethereum"
 	"github.com/likecoin/like-migration-backend/pkg/handler"
+	likecoin_api "github.com/likecoin/like-migration-backend/pkg/likecoin/api"
 )
 
 type MigrateLikerIDWithEthAddressRequestBody struct {
-	CosmosPubKey    string `json:"cosmos_pub_key,omitempty"`
-	LikerID         string `json:"liker_id,omitempty"`
-	EthAddress      string `json:"eth_address,omitempty"`
-	CosmosSignature string `json:"cosmos_signature,omitempty"`
-	EthSignature    string `json:"eth_signature,omitempty"`
-	SigningMessage  string `json:"signing_message,omitempty"`
+	CosmosAddress        string `json:"cosmos_address,omitempty"`
+	CosmosPubKey         string `json:"cosmos_pub_key,omitempty"`
+	EthAddress           string `json:"eth_address,omitempty"`
+	CosmosSignature      string `json:"cosmos_signature,omitempty"`
+	CosmosSigningMessage string `json:"cosmos_signing_message,omitempty"`
+	EthSignature         string `json:"eth_signature,omitempty"`
+	EthSigningMessage    string `json:"eth_signing_message,omitempty"`
 }
 
 type MigrateLikerIDWithEthAddressResponseBody struct {
@@ -26,6 +27,7 @@ type MigrateLikerIDWithEthAddressResponseBody struct {
 }
 
 type LikerIDMigrationHandler struct {
+	LikecoinAPI *likecoin_api.LikecoinAPI
 }
 
 func (p *LikerIDMigrationHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -55,21 +57,7 @@ func (p *LikerIDMigrationHandler) ServeHTTP(w http.ResponseWriter, r *http.Reque
 }
 
 func (p *LikerIDMigrationHandler) handle(data *MigrateLikerIDWithEthAddressRequestBody) error {
-	verified, err := cosmos.VerifyArbitrarySignature(data.CosmosPubKey, data.CosmosSignature, data.SigningMessage)
-	if err != nil {
-		return err
-	}
-
-	// FIXME: check cosmos signature verified
-	// ```
-	// if !verified {
-	//   return fmt.Errorf("cosmos signature not verified")
-	// }
-	// ```
-	// For details, see VerifyArbitrarySignature
-	fmt.Printf("cosmos signature verified: %v\n", verified)
-
-	recoveredAddr, err := ethereum.RecoverAddress(data.EthSignature, []byte(data.SigningMessage))
+	recoveredAddr, err := ethereum.RecoverAddress(data.EthSignature, []byte(data.EthSigningMessage))
 	if err != nil {
 		return err
 	}
@@ -80,7 +68,26 @@ func (p *LikerIDMigrationHandler) handle(data *MigrateLikerIDWithEthAddressReque
 		return fmt.Errorf("ethereum signature not verified")
 	}
 
-	// TODO send to likerland server
+	// The cosmos signature will be verified by the likecoin api
+	response, err := p.LikecoinAPI.MigrateUserEVMWallet(&likecoin_api.MigrateUserEVMWalletRequest{
+		CosmosAddress:          data.CosmosAddress,
+		CosmosSignature:        data.CosmosSignature,
+		CosmosPublicKey:        data.CosmosPubKey,
+		CosmosSignatureContent: data.CosmosSigningMessage,
+		SignMethod:             likecoin_api.MigrateUserEVMWalletRequestSignMethodMemo,
+	})
+
+	if err != nil {
+		return err
+	}
+
+	if response.MigrateLikerLandError != "" {
+		return fmt.Errorf("migrate liker land error: %s", response.MigrateLikerLandError)
+	}
+
+	if response.MigrateLikerIdError != "" {
+		return fmt.Errorf("migrate liker id error: %s", response.MigrateLikerIdError)
+	}
 
 	return nil
 }
