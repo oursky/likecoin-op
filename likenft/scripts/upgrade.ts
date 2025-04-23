@@ -1,5 +1,7 @@
-import "@openzeppelin/hardhat-upgrades";
 import { ContractAlreadyVerifiedError } from "@nomicfoundation/hardhat-verify/internal/errors";
+import "@openzeppelin/hardhat-upgrades";
+import { DeployImplementationResponse } from "@openzeppelin/hardhat-upgrades/dist/deploy-implementation";
+import { UpgradesError } from "@openzeppelin/upgrades-core";
 import hardhat, { ethers, upgrades } from "hardhat";
 
 async function main() {
@@ -9,15 +11,30 @@ async function main() {
   console.log("Owner:", owner.address);
   console.log("Upgrading LikeProtocol...", process.env.ERC721_PROXY_ADDRESS!);
 
-  const newImplementationAddress = await upgrades.prepareUpgrade(
-    process.env.ERC721_PROXY_ADDRESS!,
-    LikeProtocol,
-    {
-      timeout: 0,
-      verifySourceCode: true,
-      kind: "uups",
-    },
-  );
+  let newImplementationAddress: DeployImplementationResponse;
+  try {
+    newImplementationAddress = await upgrades.prepareUpgrade(
+      process.env.ERC721_PROXY_ADDRESS!,
+      LikeProtocol,
+      {
+        timeout: 0,
+        verifySourceCode: true,
+        kind: "uups",
+      },
+    );
+  } catch (e) {
+    if (e instanceof UpgradesError) {
+      console.log(e);
+      if (
+        /^Deployment at address (0x[a-zA-Z0-9]+) is not registered/.exec(
+          e.message,
+        ) != null
+      ) {
+        console.info("Please run scripts/forceImport.ts using hardhat.");
+      }
+    }
+    throw e;
+  }
 
   console.log(
     "LikeProtocol new implementation is deployed to:",
