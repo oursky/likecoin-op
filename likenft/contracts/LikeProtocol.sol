@@ -44,7 +44,7 @@ contract LikeProtocol is
         }
     }
 
-    event NewBookNFT(address bookNFT, BookConfig config);
+    event NewBookNFT(address indexed bookNFT, BookConfig config);
     event BookNFTImplementationUpgraded(address newImplementation);
     error BookNFTInvalidImplementation(address implementation);
 
