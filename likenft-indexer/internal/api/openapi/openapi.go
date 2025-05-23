@@ -5,22 +5,48 @@ import (
 	"net/http"
 
 	"likenft-indexer/ent"
+	"likenft-indexer/internal/api/openapi/middleware"
+	"likenft-indexer/internal/database"
 	"likenft-indexer/openapi/api"
+
+	"github.com/hibiken/asynq"
 )
 
 type OpenAPIHandler struct {
+	likeProtocolAddress string
+
 	db *ent.Client
+
+	asynqClient *asynq.Client
 }
 
 var _ api.Handler = &OpenAPIHandler{}
 
 func NewOpenAPIHandler(
-	db *ent.Client,
+	indexActionApiKey string,
+
+	likeProtocolAddress string,
+
+	db database.Service,
+
+	asyncClient *asynq.Client,
 ) http.Handler {
 	handler := &OpenAPIHandler{
-		db: db,
+		likeProtocolAddress: likeProtocolAddress,
+
+		db: db.Client(),
+
+		asynqClient: asyncClient,
 	}
-	srv, err := api.NewServer(handler)
+
+	srv, err := api.NewServer(
+		handler,
+		api.WithMiddleware(
+			middleware.MakeHeaderApiKeyAuthMiddleware(
+				middleware.IndexActionApiKeyAuthHeaderName,
+				indexActionApiKey),
+		),
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
