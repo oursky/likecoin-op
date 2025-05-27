@@ -22,6 +22,10 @@ type EnvConfig struct {
 	LikecoinAPIUrlBase            string `envconfig:"LIKECOIN_API_URL_BASE"`
 	LikecoinAPIHTTPTimeoutSeconds int    `envconfig:"LIKECOIN_API_HTTP_TIMEOUT_SECONDS" default:"10"`
 	LikecoinBurningCosmosAddress  string `envconfig:"LIKECOIN_BURNING_COSMOS_ADDRESS"`
+
+	W3SpaceDID          string `envconfig:"W3_SPACE_DID"`
+	W3UcanDIDPrivateKey string `envconfig:"W3_UCAN_DID_PRIVATE_KEY"`
+	W3UcanProofPath     string `envconfig:"W3_UCAN_PROOF_PATH"`
 }
 
 func LoadEnvConfigFromEnv() (*EnvConfig, error) {

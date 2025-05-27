@@ -26,6 +26,10 @@ type EnvConfig struct {
 	InitialNewClassMinter     string `envconfig:"INITIAL_NEW_CLASS_MINTER"`
 	InitialNewClassUpdater    string `envconfig:"INITIAL_NEW_CLASS_UPDATER"`
 	InitialBatchMintNFTsOwner string `envconfig:"INITIAL_BATCH_MINT_NFTS_OWNER"`
+
+	W3SpaceDID          string `envconfig:"W3_SPACE_DID"`
+	W3UcanDIDPrivateKey string `envconfig:"W3_UCAN_DID_PRIVATE_KEY"`
+	W3UcanProofPath     string `envconfig:"W3_UCAN_PROOF_PATH"`
 }
 
 func LoadEnvConfigFromEnv() (*EnvConfig, error) {
