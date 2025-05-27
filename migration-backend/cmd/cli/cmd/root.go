@@ -6,6 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/likecoin/like-migration-backend/cmd/cli/cmd/fileupload"
 	"github.com/likecoin/like-migration-backend/cmd/cli/cmd/image"
 	"github.com/likecoin/like-migration-backend/cmd/cli/cmd/likecoin"
 	"github.com/likecoin/like-migration-backend/cmd/cli/cmd/likecoinapi"
@@ -29,6 +30,7 @@ func Execute(envCfg *config.EnvConfig) {
 }
 
 func init() {
+	rootCmd.AddCommand(fileupload.FileUploadCmd)
 	rootCmd.AddCommand(image.ImageCmd)
 	rootCmd.AddCommand(likenft.LikeNFTCmd)
 	rootCmd.AddCommand(likecoin.LikeCoinCmd)
