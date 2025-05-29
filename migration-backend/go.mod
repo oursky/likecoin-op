@@ -1,6 +1,8 @@
 module github.com/likecoin/like-migration-backend
 
-go 1.22.10
+go 1.23.0
+
+toolchain go1.23.9
 
 require (
 	cosmossdk.io/math v1.4.0
@@ -31,6 +33,7 @@ require (
 	github.com/shopspring/decimal v1.4.0
 	github.com/smartystreets/goconvey v1.8.1
 	github.com/spf13/cobra v1.8.1
+	github.com/storacha/go-piece v0.0.0-20241110131739-7631aadb97ea
 	github.com/stretchr/testify v1.9.0
 	github.com/web3-storage/go-ucanto v0.1.0
 	github.com/web3-storage/go-w3up v0.0.3
@@ -88,6 +91,7 @@ require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/ethereum/c-kzg-4844 v1.0.0 // indirect
 	github.com/ethereum/go-verkle v0.1.1-0.20240829091221-dffa7562dbe9 // indirect
+	github.com/filecoin-project/go-fil-commcid v0.2.0 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/go-gorp/gorp/v3 v3.1.0 // indirect
 	github.com/go-kit/kit v0.12.0 // indirect

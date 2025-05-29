@@ -147,10 +147,6 @@ func (s *w3client) Upload(c context.Context, fileData []byte) (string, error) {
 	}
 	pieceLink := piece.FromPieceDigest(pd)
 
-	if err != nil {
-		return "", err
-	}
-
 	logger.Info("Instantiating shard upload...")
 
 	if s.dryRun {

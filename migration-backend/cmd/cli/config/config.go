@@ -30,6 +30,9 @@ type EnvConfig struct {
 	W3SpaceDID          string `envconfig:"W3_SPACE_DID"`
 	W3UcanDIDPrivateKey string `envconfig:"W3_UCAN_DID_PRIVATE_KEY"`
 	W3UcanProofPath     string `envconfig:"W3_UCAN_PROOF_PATH"`
+
+	IpfsHTTPBaseURL    string `envconfig:"IPFS_HTTP_BASE_URL"`
+	ArweaveHTTPBaseURL string `envconfig:"ARWEAVE_HTTP_BASE_URL"`
 }
 
 func LoadEnvConfigFromEnv() (*EnvConfig, error) {
