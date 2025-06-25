@@ -149,6 +149,8 @@ likenftIndexer:
   worker:
     name: likenft-indexer-worker
 
+    verbosity: warn
+
     resources: {}
 
   scheduler:

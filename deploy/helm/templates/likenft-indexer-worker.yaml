@@ -20,7 +20,7 @@ spec:
       - name: {{ .Values.likenftIndexer.worker.name }}
         image: {{ .Values.likenftIndexer.container.imageRepository }}:{{ .Values.appVersion }}
         imagePullPolicy: {{ .Values.likenftIndexer.container.imagePullPolicy}}
-        command: ["likenft-indexer-worker-cli", "worker", "default"]
+        command: ["likenft-indexer-worker-cli", "worker", "default", "--verbose", "{{ .Values.likenftIndexer.worker.verbosity }}"]
         envFrom:
           - secretRef:
               name: {{ .Values.likenftIndexer.name }}
@@ -51,7 +51,7 @@ spec:
       - name: {{ .Values.likenftIndexer.worker.name }}-index-action
         image: {{ .Values.likenftIndexer.container.imageRepository }}:{{ .Values.appVersion }}
         imagePullPolicy: {{ .Values.likenftIndexer.container.imagePullPolicy}}
-        command: ["likenft-indexer-worker-cli", "worker", "index-action"]
+        command: ["likenft-indexer-worker-cli", "worker", "index-action", "--verbose", "{{ .Values.likenftIndexer.worker.verbosity }}"]
         envFrom:
           - secretRef:
               name: {{ .Values.likenftIndexer.name }}
