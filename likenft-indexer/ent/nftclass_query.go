@@ -6,11 +6,12 @@ import (
 	"context"
 	"database/sql/driver"
 	"fmt"
+	"math"
+
 	"likenft-indexer/ent/account"
 	"likenft-indexer/ent/nft"
 	"likenft-indexer/ent/nftclass"
 	"likenft-indexer/ent/predicate"
-	"math"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
@@ -336,12 +337,12 @@ func (ncq *NFTClassQuery) WithOwner(opts ...func(*AccountQuery)) *NFTClassQuery 
 // Example:
 //
 //	var v []struct {
-//		Address string `json:"address,omitempty"`
+//		AcquireBookNftEventsWeight float64 `json:"acquire_book_nft_events_weight,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.NFTClass.Query().
-//		GroupBy(nftclass.FieldAddress).
+//		GroupBy(nftclass.FieldAcquireBookNftEventsWeight).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 func (ncq *NFTClassQuery) GroupBy(field string, fields ...string) *NFTClassGroupBy {
@@ -359,11 +360,11 @@ func (ncq *NFTClassQuery) GroupBy(field string, fields ...string) *NFTClassGroup
 // Example:
 //
 //	var v []struct {
-//		Address string `json:"address,omitempty"`
+//		AcquireBookNftEventsWeight float64 `json:"acquire_book_nft_events_weight,omitempty"`
 //	}
 //
 //	client.NFTClass.Query().
-//		Select(nftclass.FieldAddress).
+//		Select(nftclass.FieldAcquireBookNftEventsWeight).
 //		Scan(ctx, &v)
 func (ncq *NFTClassQuery) Select(fields ...string) *NFTClassSelect {
 	ncq.ctx.Fields = append(ncq.ctx.Fields, fields...)
