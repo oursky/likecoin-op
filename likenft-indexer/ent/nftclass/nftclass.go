@@ -3,8 +3,10 @@
 package nftclass
 
 import (
-	"likenft-indexer/ent/schema/typeutil"
+	"fmt"
 	"math/big"
+
+	"likenft-indexer/ent/schema/typeutil"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -16,6 +18,16 @@ const (
 	Label = "nft_class"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldAcquireBookNftEventsWeight holds the string denoting the acquire_book_nft_events_weight field in the database.
+	FieldAcquireBookNftEventsWeight = "acquire_book_nft_events_weight"
+	// FieldAcquireBookNftEventsLastProcessedTime holds the string denoting the acquire_book_nft_events_last_processed_time field in the database.
+	FieldAcquireBookNftEventsLastProcessedTime = "acquire_book_nft_events_last_processed_time"
+	// FieldAcquireBookNftEventsScore holds the string denoting the acquire_book_nft_events_score field in the database.
+	FieldAcquireBookNftEventsScore = "acquire_book_nft_events_score"
+	// FieldAcquireBookNftEventsStatus holds the string denoting the acquire_book_nft_events_status field in the database.
+	FieldAcquireBookNftEventsStatus = "acquire_book_nft_events_status"
+	// FieldAcquireBookNftEventsFailedReason holds the string denoting the acquire_book_nft_events_failed_reason field in the database.
+	FieldAcquireBookNftEventsFailedReason = "acquire_book_nft_events_failed_reason"
 	// FieldAddress holds the string denoting the address field in the database.
 	FieldAddress = "address"
 	// FieldName holds the string denoting the name field in the database.
@@ -75,6 +87,11 @@ const (
 // Columns holds all SQL columns for nftclass fields.
 var Columns = []string{
 	FieldID,
+	FieldAcquireBookNftEventsWeight,
+	FieldAcquireBookNftEventsLastProcessedTime,
+	FieldAcquireBookNftEventsScore,
+	FieldAcquireBookNftEventsStatus,
+	FieldAcquireBookNftEventsFailedReason,
 	FieldAddress,
 	FieldName,
 	FieldSymbol,
@@ -116,6 +133,10 @@ func ValidColumn(column string) bool {
 }
 
 var (
+	// DefaultAcquireBookNftEventsWeight holds the default value on creation for the "acquire_book_nft_events_weight" field.
+	DefaultAcquireBookNftEventsWeight float64
+	// AcquireBookNftEventsWeightValidator is a validator for the "acquire_book_nft_events_weight" field. It is called by the builders before save.
+	AcquireBookNftEventsWeightValidator func(float64) error
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
 	NameValidator func(string) error
 	// SymbolValidator is a validator for the "symbol" field. It is called by the builders before save.
@@ -133,12 +154,64 @@ var (
 	}
 )
 
+// AcquireBookNftEventsStatus defines the type for the "acquire_book_nft_events_status" enum field.
+type AcquireBookNftEventsStatus string
+
+// AcquireBookNftEventsStatus values.
+const (
+	AcquireBookNftEventsStatusEnqueueing    AcquireBookNftEventsStatus = "enqueueing"
+	AcquireBookNftEventsStatusEnqueued      AcquireBookNftEventsStatus = "enqueued"
+	AcquireBookNftEventsStatusEnqueueFailed AcquireBookNftEventsStatus = "enqueue_failed"
+	AcquireBookNftEventsStatusProcessing    AcquireBookNftEventsStatus = "processing"
+	AcquireBookNftEventsStatusCompleted     AcquireBookNftEventsStatus = "completed"
+	AcquireBookNftEventsStatusFailed        AcquireBookNftEventsStatus = "failed"
+)
+
+func (abnes AcquireBookNftEventsStatus) String() string {
+	return string(abnes)
+}
+
+// AcquireBookNftEventsStatusValidator is a validator for the "acquire_book_nft_events_status" field enum values. It is called by the builders before save.
+func AcquireBookNftEventsStatusValidator(abnes AcquireBookNftEventsStatus) error {
+	switch abnes {
+	case AcquireBookNftEventsStatusEnqueueing, AcquireBookNftEventsStatusEnqueued, AcquireBookNftEventsStatusEnqueueFailed, AcquireBookNftEventsStatusProcessing, AcquireBookNftEventsStatusCompleted, AcquireBookNftEventsStatusFailed:
+		return nil
+	default:
+		return fmt.Errorf("nftclass: invalid enum value for acquire_book_nft_events_status field: %q", abnes)
+	}
+}
+
 // OrderOption defines the ordering options for the NFTClass queries.
 type OrderOption func(*sql.Selector)
 
 // ByID orders the results by the id field.
 func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
+}
+
+// ByAcquireBookNftEventsWeight orders the results by the acquire_book_nft_events_weight field.
+func ByAcquireBookNftEventsWeight(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAcquireBookNftEventsWeight, opts...).ToFunc()
+}
+
+// ByAcquireBookNftEventsLastProcessedTime orders the results by the acquire_book_nft_events_last_processed_time field.
+func ByAcquireBookNftEventsLastProcessedTime(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAcquireBookNftEventsLastProcessedTime, opts...).ToFunc()
+}
+
+// ByAcquireBookNftEventsScore orders the results by the acquire_book_nft_events_score field.
+func ByAcquireBookNftEventsScore(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAcquireBookNftEventsScore, opts...).ToFunc()
+}
+
+// ByAcquireBookNftEventsStatus orders the results by the acquire_book_nft_events_status field.
+func ByAcquireBookNftEventsStatus(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAcquireBookNftEventsStatus, opts...).ToFunc()
+}
+
+// ByAcquireBookNftEventsFailedReason orders the results by the acquire_book_nft_events_failed_reason field.
+func ByAcquireBookNftEventsFailedReason(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAcquireBookNftEventsFailedReason, opts...).ToFunc()
 }
 
 // ByAddress orders the results by the address field.

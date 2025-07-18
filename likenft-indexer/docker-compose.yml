@@ -51,9 +51,29 @@ services:
       - "1"
       - acquire-book-nft-events
       - acquire-like-protocol-events
-      - check-book-nfts
       - check-like-protocol
       - check-received-evm-events
+
+  worker-acquire-book-nft:
+    profiles: [worker]
+    image: golang:1.23.5
+    depends_on:
+      - redis
+      - psql_bp
+    working_dir: /src
+    volumes:
+      - .:/src
+      - go-build-cache:/root/.cache
+      - go-mod-cache:/go/pkg/mod
+    command:
+      - go
+      - run
+      - ./cmd/worker
+      - worker
+      - --concurrency
+      - "1"
+      - enqueue-acquire-book-nft-tasks
+      - enqueue-acquire-book-nft-tasks--acquire-book-nft
 
   process-evm-event:
     profiles: [worker]
@@ -135,9 +155,9 @@ services:
       - scheduler
       - --cron
       - "*/1 * * * *"
-      - check-book-nfts
       - check-like-protocol
       - check-received-evm-events
+      - enqueue-acquire-book-nft-tasks
 
   redis:
     image: redis

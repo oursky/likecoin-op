@@ -3,6 +3,8 @@
 package ent
 
 import (
+	"math/big"
+
 	"likenft-indexer/ent/evmevent"
 	"likenft-indexer/ent/evmeventprocessedblockheight"
 	"likenft-indexer/ent/likeprotocol"
@@ -11,7 +13,6 @@ import (
 	"likenft-indexer/ent/schema"
 	"likenft-indexer/ent/schema/typeutil"
 	"likenft-indexer/ent/transactionmemo"
-	"math/big"
 
 	"entgo.io/ent/schema/field"
 )
@@ -103,8 +104,17 @@ func init() {
 			return nil
 		}
 	}()
+	nftclassMixin := schema.NFTClass{}.Mixin()
+	nftclassMixinFields0 := nftclassMixin[0].Fields()
+	_ = nftclassMixinFields0
 	nftclassFields := schema.NFTClass{}.Fields()
 	_ = nftclassFields
+	// nftclassDescAcquireBookNftEventsWeight is the schema descriptor for acquire_book_nft_events_weight field.
+	nftclassDescAcquireBookNftEventsWeight := nftclassMixinFields0[0].Descriptor()
+	// nftclass.DefaultAcquireBookNftEventsWeight holds the default value on creation for the acquire_book_nft_events_weight field.
+	nftclass.DefaultAcquireBookNftEventsWeight = nftclassDescAcquireBookNftEventsWeight.Default.(float64)
+	// nftclass.AcquireBookNftEventsWeightValidator is a validator for the "acquire_book_nft_events_weight" field. It is called by the builders before save.
+	nftclass.AcquireBookNftEventsWeightValidator = nftclassDescAcquireBookNftEventsWeight.Validators[0].(func(float64) error)
 	// nftclassDescName is the schema descriptor for name field.
 	nftclassDescName := nftclassFields[1].Descriptor()
 	// nftclass.NameValidator is a validator for the "name" field. It is called by the builders before save.

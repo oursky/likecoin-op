@@ -24,6 +24,12 @@ type EnvConfig struct {
 
 	EvmEventLikeProtocolInitialBlockHeight uint64 `envconfig:"EVM_EVENT_LIKE_PROTOCOL_INITIAL_BLOCK_HEIGHT" default:"1"`
 	EvmEventQueryNumberOfBlocksLimit       uint64 `envconfig:"EVM_EVENT_QUERY_NUMBER_OF_BLOCKS_LIMIT"`
+
+	TaskAcquireBookNFTEventsMaxQueueLength               int     `envconfig:"TASK_ACQUIRE_BOOK_NFT_EVENTS_MAX_QUEUE_LENGTH"`
+	TaskAcquireBookNFTEventsScoreBlockHeightContribution float64 `envconfig:"TASK_ACQUIRE_BOOK_NFT_EVENTS_SCORE_BLOCK_HEIGHT_CONTRIBUTION"`
+	TaskAcquireBookNFTEventsScoreWeight0Constant         float64 `envconfig:"TASK_ACQUIRE_BOOK_NFT_EVENTS_SCORE_WEIGHT_0_CONSTANT"`
+	TaskAcquireBookNFTEventsScoreWeight1Constant         float64 `envconfig:"TASK_ACQUIRE_BOOK_NFT_EVENTS_SCORE_WEIGHT_1_CONSTANT"`
+	TaskAcquireBookNFTEventsScoreWeightContribution      float64 `envconfig:"TASK_ACQUIRE_BOOK_NFT_EVENTS_SCORE_WEIGHT_CONTRIBUTION"`
 }
 
 func LoadEnvConfigFromEnv() (*EnvConfig, error) {

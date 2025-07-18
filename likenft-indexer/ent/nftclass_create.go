@@ -6,13 +6,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"math/big"
+	"time"
+
 	"likenft-indexer/ent/account"
 	"likenft-indexer/ent/nft"
 	"likenft-indexer/ent/nftclass"
 	"likenft-indexer/ent/schema/typeutil"
 	"likenft-indexer/internal/evm/model"
-	"math/big"
-	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -23,6 +24,76 @@ type NFTClassCreate struct {
 	config
 	mutation *NFTClassMutation
 	hooks    []Hook
+}
+
+// SetAcquireBookNftEventsWeight sets the "acquire_book_nft_events_weight" field.
+func (ncc *NFTClassCreate) SetAcquireBookNftEventsWeight(f float64) *NFTClassCreate {
+	ncc.mutation.SetAcquireBookNftEventsWeight(f)
+	return ncc
+}
+
+// SetNillableAcquireBookNftEventsWeight sets the "acquire_book_nft_events_weight" field if the given value is not nil.
+func (ncc *NFTClassCreate) SetNillableAcquireBookNftEventsWeight(f *float64) *NFTClassCreate {
+	if f != nil {
+		ncc.SetAcquireBookNftEventsWeight(*f)
+	}
+	return ncc
+}
+
+// SetAcquireBookNftEventsLastProcessedTime sets the "acquire_book_nft_events_last_processed_time" field.
+func (ncc *NFTClassCreate) SetAcquireBookNftEventsLastProcessedTime(t time.Time) *NFTClassCreate {
+	ncc.mutation.SetAcquireBookNftEventsLastProcessedTime(t)
+	return ncc
+}
+
+// SetNillableAcquireBookNftEventsLastProcessedTime sets the "acquire_book_nft_events_last_processed_time" field if the given value is not nil.
+func (ncc *NFTClassCreate) SetNillableAcquireBookNftEventsLastProcessedTime(t *time.Time) *NFTClassCreate {
+	if t != nil {
+		ncc.SetAcquireBookNftEventsLastProcessedTime(*t)
+	}
+	return ncc
+}
+
+// SetAcquireBookNftEventsScore sets the "acquire_book_nft_events_score" field.
+func (ncc *NFTClassCreate) SetAcquireBookNftEventsScore(f float64) *NFTClassCreate {
+	ncc.mutation.SetAcquireBookNftEventsScore(f)
+	return ncc
+}
+
+// SetNillableAcquireBookNftEventsScore sets the "acquire_book_nft_events_score" field if the given value is not nil.
+func (ncc *NFTClassCreate) SetNillableAcquireBookNftEventsScore(f *float64) *NFTClassCreate {
+	if f != nil {
+		ncc.SetAcquireBookNftEventsScore(*f)
+	}
+	return ncc
+}
+
+// SetAcquireBookNftEventsStatus sets the "acquire_book_nft_events_status" field.
+func (ncc *NFTClassCreate) SetAcquireBookNftEventsStatus(nbnes nftclass.AcquireBookNftEventsStatus) *NFTClassCreate {
+	ncc.mutation.SetAcquireBookNftEventsStatus(nbnes)
+	return ncc
+}
+
+// SetNillableAcquireBookNftEventsStatus sets the "acquire_book_nft_events_status" field if the given value is not nil.
+func (ncc *NFTClassCreate) SetNillableAcquireBookNftEventsStatus(nbnes *nftclass.AcquireBookNftEventsStatus) *NFTClassCreate {
+	if nbnes != nil {
+		ncc.SetAcquireBookNftEventsStatus(*nbnes)
+	}
+	return ncc
+}
+
+// SetAcquireBookNftEventsFailedReason sets the "acquire_book_nft_events_failed_reason" field.
+func (ncc *NFTClassCreate) SetAcquireBookNftEventsFailedReason(s string) *NFTClassCreate {
+	ncc.mutation.SetAcquireBookNftEventsFailedReason(s)
+	return ncc
+}
+
+// SetNillableAcquireBookNftEventsFailedReason sets the "acquire_book_nft_events_failed_reason" field if the given value is not nil.
+func (ncc *NFTClassCreate) SetNillableAcquireBookNftEventsFailedReason(s *string) *NFTClassCreate {
+	if s != nil {
+		ncc.SetAcquireBookNftEventsFailedReason(*s)
+	}
+	return ncc
 }
 
 // SetAddress sets the "address" field.
@@ -220,6 +291,10 @@ func (ncc *NFTClassCreate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (ncc *NFTClassCreate) defaults() {
+	if _, ok := ncc.mutation.AcquireBookNftEventsWeight(); !ok {
+		v := nftclass.DefaultAcquireBookNftEventsWeight
+		ncc.mutation.SetAcquireBookNftEventsWeight(v)
+	}
 	if _, ok := ncc.mutation.DisabledForIndexing(); !ok {
 		v := nftclass.DefaultDisabledForIndexing
 		ncc.mutation.SetDisabledForIndexing(v)
@@ -228,6 +303,19 @@ func (ncc *NFTClassCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (ncc *NFTClassCreate) check() error {
+	if _, ok := ncc.mutation.AcquireBookNftEventsWeight(); !ok {
+		return &ValidationError{Name: "acquire_book_nft_events_weight", err: errors.New(`ent: missing required field "NFTClass.acquire_book_nft_events_weight"`)}
+	}
+	if v, ok := ncc.mutation.AcquireBookNftEventsWeight(); ok {
+		if err := nftclass.AcquireBookNftEventsWeightValidator(v); err != nil {
+			return &ValidationError{Name: "acquire_book_nft_events_weight", err: fmt.Errorf(`ent: validator failed for field "NFTClass.acquire_book_nft_events_weight": %w`, err)}
+		}
+	}
+	if v, ok := ncc.mutation.AcquireBookNftEventsStatus(); ok {
+		if err := nftclass.AcquireBookNftEventsStatusValidator(v); err != nil {
+			return &ValidationError{Name: "acquire_book_nft_events_status", err: fmt.Errorf(`ent: validator failed for field "NFTClass.acquire_book_nft_events_status": %w`, err)}
+		}
+	}
 	if _, ok := ncc.mutation.Address(); !ok {
 		return &ValidationError{Name: "address", err: errors.New(`ent: missing required field "NFTClass.address"`)}
 	}
@@ -311,6 +399,26 @@ func (ncc *NFTClassCreate) createSpec() (*NFTClass, *sqlgraph.CreateSpec, error)
 		_node = &NFTClass{config: ncc.config}
 		_spec = sqlgraph.NewCreateSpec(nftclass.Table, sqlgraph.NewFieldSpec(nftclass.FieldID, field.TypeInt))
 	)
+	if value, ok := ncc.mutation.AcquireBookNftEventsWeight(); ok {
+		_spec.SetField(nftclass.FieldAcquireBookNftEventsWeight, field.TypeFloat64, value)
+		_node.AcquireBookNftEventsWeight = value
+	}
+	if value, ok := ncc.mutation.AcquireBookNftEventsLastProcessedTime(); ok {
+		_spec.SetField(nftclass.FieldAcquireBookNftEventsLastProcessedTime, field.TypeTime, value)
+		_node.AcquireBookNftEventsLastProcessedTime = &value
+	}
+	if value, ok := ncc.mutation.AcquireBookNftEventsScore(); ok {
+		_spec.SetField(nftclass.FieldAcquireBookNftEventsScore, field.TypeFloat64, value)
+		_node.AcquireBookNftEventsScore = &value
+	}
+	if value, ok := ncc.mutation.AcquireBookNftEventsStatus(); ok {
+		_spec.SetField(nftclass.FieldAcquireBookNftEventsStatus, field.TypeEnum, value)
+		_node.AcquireBookNftEventsStatus = &value
+	}
+	if value, ok := ncc.mutation.AcquireBookNftEventsFailedReason(); ok {
+		_spec.SetField(nftclass.FieldAcquireBookNftEventsFailedReason, field.TypeString, value)
+		_node.AcquireBookNftEventsFailedReason = &value
+	}
 	if value, ok := ncc.mutation.Address(); ok {
 		_spec.SetField(nftclass.FieldAddress, field.TypeString, value)
 		_node.Address = value

@@ -49,10 +49,6 @@ func groupByProperty[T any, K comparable](items []T, getProperty func(T) K) map[
 
 func HandleAcquireBookNFTEventsTask(ctx context.Context, t *asynq.Task) error {
 	logger := appcontext.LoggerFromContext(ctx)
-	cfg := appcontext.ConfigFromContext(ctx)
-	evmEventQueryClient := appcontext.EvmQueryClientFromContext(ctx)
-	evmClient := appcontext.EvmClientFromContext(ctx)
-
 	mylogger := logger.WithGroup("HandleAcquireBookNFTEventsTask")
 
 	ctx, cancel := context.WithCancel(ctx)
@@ -64,13 +60,26 @@ func HandleAcquireBookNFTEventsTask(ctx context.Context, t *asynq.Task) error {
 		return fmt.Errorf("json.Unmarshal failed: %v: %w", err, asynq.SkipRetry)
 	}
 
+	return HandleAcquireBookNFTEvents(ctx, p.ContractAddresses)
+}
+
+func HandleAcquireBookNFTEvents(
+	ctx context.Context,
+	contractAddresses []string,
+) error {
+	logger := appcontext.LoggerFromContext(ctx)
+	mylogger := logger.WithGroup("HandleAcquireBookNFTEvents")
+
+	cfg := appcontext.ConfigFromContext(ctx)
+	evmEventQueryClient := appcontext.EvmQueryClientFromContext(ctx)
+	evmClient := appcontext.EvmClientFromContext(ctx)
 	dbService := database.New()
 
 	evmEventRepository := database.MakeEVMEventRepository(dbService)
 	nftClassRepository := database.MakeNFTClassRepository(dbService)
 
 	nftClasses, err := nftClassRepository.QueryNFTClassesByAddressesExact(
-		ctx, p.ContractAddresses,
+		ctx, contractAddresses,
 	)
 
 	if err != nil {
