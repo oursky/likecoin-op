@@ -146,6 +146,14 @@ likenftIndexer:
 
     resources: {}
 
+  env:
+    # Assume there are 100 booknfts and the scheduler will schedule the fan out job per 1 minute
+    TASK_ACQUIRE_BOOK_NFT_EVENTS_MAX_QUEUE_LENGTH: "100"
+    TASK_ACQUIRE_BOOK_NFT_EVENTS_SCORE_BLOCK_HEIGHT_CONTRIBUTION: "0.00000001"
+    TASK_ACQUIRE_BOOK_NFT_EVENTS_SCORE_WEIGHT_0_CONSTANT: "10"
+    TASK_ACQUIRE_BOOK_NFT_EVENTS_SCORE_WEIGHT_1_CONSTANT: "1"
+    TASK_ACQUIRE_BOOK_NFT_EVENTS_SCORE_WEIGHT_CONTRIBUTION: "60"
+
   worker:
     name: likenft-indexer-worker
 
@@ -157,6 +165,11 @@ likenftIndexer:
           - acquire-like-protocol-events
           - check-like-protocol
           - check-received-evm-events
+      acquire-book-nft:
+        resources: {}
+        tasks:
+          - enqueue-acquire-book-nft-tasks
+          - enqueue-acquire-book-nft-tasks--acquire-book-nft
       process-evm-event:
         resources: {}
         tasks:
@@ -181,6 +194,7 @@ likenftIndexer:
         tasks:
           - check-like-protocol
           - check-received-evm-events
+          - enqueue-acquire-book-nft-tasks
         resources: {}
 
 redis:
