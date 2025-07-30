@@ -32,7 +32,7 @@ const config: HardhatUserConfig = {
   etherscan: {
     apiKey: {
       "optimism-sepolia":
-        "Is not required by blockscout. Can be any non-empty string",
+        "empty",
       sepolia: "Is not required by blockscout. Can be any non-empty string",
       optimism: `${process.env.OPTIMISM_BLOCKSCOUT_KEY}`, // From rickmak.eth account
     },
@@ -57,8 +57,8 @@ const config: HardhatUserConfig = {
         network: "optimism-sepolia",
         chainId: 11155420,
         urls: {
-          apiURL: "https://optimism-sepolia.blockscout.com/api",
-          browserURL: "https://optimism-sepolia.blockscout.com/",
+          apiURL: "https://testnet-explorer.optimism.io/api",
+          browserURL: "https://testnet-explorer.optimism.io",
         },
       },
     ],
@@ -71,7 +71,9 @@ const config: HardhatUserConfig = {
     optimism: {
       url: `${process.env.OPTIMISM_BLOCKSCOUT_URL}`,
       chainId: 10,
-      ledgerAccounts: ["0xB0318A8f049b625dA5DdD184FfFF668Aa6E96261"],
+      accounts: [`0x${process.env.DEPLOY_WALLET_PRIVATE_KEY}`]
+      // The ledger account is only use for initial deploy. See deploy/README and safe-wallet.md
+      // ledgerAccounts: ["0xB0318A8f049b625dA5DdD184FfFF668Aa6E96261"],
     },
     "optimism-sepolia": {
       url: "https://sepolia.optimism.io",

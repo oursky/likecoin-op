@@ -1,10 +1,10 @@
 # Production guide on upgrade LikeProtocol
 
-According to the operation guide, an offline key is ued to deploy the initial contract to keep predictable address. And then transfer the ownership to a community owned multisif Safe wallet. This guide is for operator to create proposal to the Safe wallet.
+According to the operation guide, an offline key is used to deploy the initial contract to keep predictable address. And then transfer the ownership to a community owned multisig Safe wallet. This guide is for operator to create proposal to the Safe wallet.
 
 We assume the subsequence LikeProtocol/BookNFT are deployed by random address owned by the developer at the time, to ease the operation overhead, as the implementation address is not effecting user expiernece.
 
-Following command are operate on sepolia.
+Following command are operate on optimism.
 
 ## Upgrade only BookNFT
 
@@ -16,24 +16,24 @@ Following command are operate on sepolia.
 #### Check the protocol status
 
 ```
-ERC721_PROXY_ADDRESS=0xC513ffcaab6f5aC669055D09f4dC0C9A3dA12c05 npm run script:sepolia scripts/queryBookNFTImpl.ts
+ERC721_PROXY_ADDRESS=0x526237a676444A67bc79E9009756df128Ca9a619 npm run script:optimism scripts/queryBookNFTImpl.ts
 ```
 
-#### Deploy V2 of BookNFT
+#### Upgrade only BookNFT
 
 ```
-npm run script:sepolia scripts/deployBookNFT.ts
+npm run script:optimism scripts/deployBookNFT.ts
 
 New BookNFT implementation is deployed to: 0x0F8d5F709c6916D332c08Be447a88e8551A43EFf
 ```
 
 #### At safe.global:
 
-- `New transcation`
+- `New transaction`
 - `Transaction Builder`
 - Fill in the LikeProtol Proxy address
 - Paste the current version of LikeProtocol abi, which is find in last tag of `abi/LikeProtocol.json`
-- The interface should show avalible function, pick upgradeTo
+- The interface should show available function, pick upgradeTo
 - Paste the above script output of BookNFT address to `newImplementation`
 - Submit the proposal
 - Ask the owner to sign with attached expected payload for cross check.
@@ -51,7 +51,7 @@ Step Overview
 #### First deploy the new version of BookNFT
 
 ```
-npm run script:sepolia scripts/deployBookNFT.ts
+npm run script:optimism scripts/deployBookNFT.ts
 
 New BookNFT implementation is deployed to: 0x0F8d5F709c6916D332c08Be447a88e8551A43EFf
 ```
@@ -61,10 +61,10 @@ Note: Dev verify the New version of BookNFT is properly initialized, it often ha
 #### Prepare the new version of LikeProtocol implementation
 
 ```
-ERC721_PROXY_ADDRESS=0xC513ffcaab6f5aC669055D09f4dC0C9A3dA12c05 npm run script:sepolia scripts/prepareLikeProtocol.ts
+ERC721_PROXY_ADDRESS=0x526237a676444A67bc79E9009756df128Ca9a619 npm run script:optimism scripts/prepareLikeProtocol.ts
 
-> script:sepolia
-> hardhat run --network sepolia scripts/prepareLikeProtocol.ts
+> script:optimism
+> hardhat run --network optimism scripts/prepareLikeProtocol.ts
 
 Deployer: 0xC71fe89e4C0e5458a793fc6548EF6B392417A7Fb
 Preparing Upgrade of LikeProtocol... 0xC513ffcaab6f5aC669055D09f4dC0C9A3dA12c05
@@ -76,7 +76,7 @@ LikeProtocol new implementation is deployed to: 0x0e43789dAe6E3F16B3411A43ecFA5c
 #### Prepare the byte payload for `upgradeToAndCall`
 
 ```
-BOOKNFT_ADDRESS=0x0F8d5F709c6916D332c08Be447a88e8551A43EFf npm run script:sepolia scripts/prepareUpgradeToAndCall.ts
+BOOKNFT_ADDRESS=0x0F8d5F709c6916D332c08Be447a88e8551A43EFf npm run script:optimism scripts/prepareUpgradeToAndCall.ts
 
 Target new BookNFT implementation address: 0x0F8d5F709c6916D332c08Be447a88e8551A43EFf
 Upgrade to and call data: 0x3659cfe60000000000000000000000000f8d5f709c6916d332c08be447a88e8551a43eff
@@ -88,7 +88,7 @@ Upgrade to and call data: 0x3659cfe60000000000000000000000000f8d5f709c6916d332c0
 - `Transaction Builder`
 - Fill in the LikeProtocol Proxy address
 - Paste the current version of LikeProtocol abi, which is find in last tag of `abi/LikeProtocol.json`
-- The interface should show avalible function, pick `upgradeToAndCall`
+- The interface should show available function, pick `upgradeToAndCall`
 - Paste the above script output of BookNFT address to `newImplementation`, `data` with the above output of `prepareUpgradeToAndCall.ts` script
 - Submit the proposal
 - Ask the owner to sign with attached expected payload for cross check.

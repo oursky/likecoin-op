@@ -8,14 +8,14 @@ To decrypt the keys, run `blackbox_decrypt_all_files`, then `make operator-key-l
 
 ## Expected procedure
 
-Current encrypted operator wallet: `0xC71fe89e4C0e5458a793fc6548EF6B392417A7Fb` (For testnet, for production, we use ledger `0xB0318A8f049b625dA5DdD184FfFF668Aa6E96261`, see `likenft/.env.optimism` for now)
+Current encrypted operator wallet: `0xC71fe89e4C0e5458a793fc6548EF6B392417A7Fb` (For production, we use ledger `0xB0318A8f049b625dA5DdD184FfFF668Aa6E96261`, see `likenft/.env.optimism` for now)
 
 Production
 LikeProtocol proxy: `0x526237a676444A67bc79E9009756df128Ca9a619`
 LikeCoin proxy: `pending`
 
 Optimism-sepolia
-LikeProtocol proxy: `0xfF79df388742f248c61A633938710559c61faEF1`
+LikeProtocol proxy: `0x67BCd74981c33E95E5e306085754DD0A721183F1`
 EkilCoin proxy: `pending`
 
 Once the initial deployment is done, we should updated the expected proxy address in the `env.operator` file for reference. On new L2 chain launch, we should operate the following steps to obtain same proxy address.
