@@ -9,7 +9,7 @@ contract Create2BeaconProxy is Create2able {
         address beacon,
         bytes memory initData,
         uint salt
-    ) public returns (address) {
+    ) internal returns (address) {
         bytes memory bytecode = type(BeaconProxy).creationCode;
         bytes memory arguments = abi.encode(beacon, initData);
         return create2(_getBytecode(bytecode, arguments), salt);

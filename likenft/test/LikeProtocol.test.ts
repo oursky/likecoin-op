@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { BaseContract, EventLog } from "ethers";
 import { ethers, upgrades } from "hardhat";
 
+import { precomputeAddressWithCreate2ableContract } from "../utils/create2";
 import { BookConfigLoader } from "./BookConfigLoader";
 import { createProtocol } from "./ProtocolFactory";
 
@@ -663,5 +664,102 @@ describe("LikeProtocol as Beacon", () => {
       .to.be.not.rejected;
     await expect(likeProtocolRandomSigner.upgradeTo(bookNFTMockContractAddress))
       .to.be.rejected;
+  });
+});
+
+describe("LikeProtocol newBookNFT2", () => {
+  before(async function () {
+    this.LikeProtocol = await ethers.getContractFactory("LikeProtocol");
+    this.LikeProtocolMock = await ethers.getContractFactory("LikeProtocolMock");
+    this.BookNFT = await ethers.getContractFactory("BookNFT");
+    this.BookNFTMock = await ethers.getContractFactory("BookNFTMock");
+    const [ownerSigner, randomSigner] = await ethers.getSigners();
+
+    this.ownerSigner = ownerSigner;
+    this.randomSigner = randomSigner;
+  });
+
+  let deployment: BaseContract;
+  let contractAddress: string;
+  let contract: any;
+  beforeEach(async function () {
+    const {
+      likeProtocolDeployment,
+      likeProtocolAddress,
+      likeProtocolContract,
+    } = await createProtocol(this.ownerSigner);
+
+    deployment = likeProtocolDeployment;
+    contractAddress = likeProtocolAddress;
+    contract = likeProtocolContract;
+  });
+
+  it("should create a new BookNFT with a deterministic address", async function () {
+    const salt = "1234";
+
+    const likeProtocolOwnerSigner = contract.connect(this.ownerSigner);
+
+    const bookConfig = BookConfigLoader.load(
+      "./test/fixtures/BookConfig0.json",
+    );
+
+    const newBookNFTArgs = {
+      creator: this.ownerSigner.address,
+      updaters: [this.ownerSigner.address],
+      minters: [this.ownerSigner.address],
+      config: bookConfig,
+    };
+
+    const BeaconProxyContractFactory =
+      await ethers.getContractFactory("BeaconProxy");
+
+    const bookNFTInitializeFnData = this.BookNFT.interface.encodeFunctionData(
+      "initialize",
+      [newBookNFTArgs],
+    );
+
+    const beaconContractDeployArgs = [contractAddress, bookNFTInitializeFnData];
+
+    const precomputedAddress = await precomputeAddressWithCreate2ableContract(
+      ethers,
+      contract,
+      BeaconProxyContractFactory,
+      beaconContractDeployArgs,
+      salt,
+    );
+
+    const newClassId = await (async () => {
+      const NewClassEvent = new Promise<string>((resolve, reject) => {
+        likeProtocolOwnerSigner.on("NewBookNFT", (id, params, event) => {
+          event.removeListener();
+          resolve(id);
+        });
+
+        setTimeout(() => {
+          reject(new Error("timeout"));
+        }, 20000);
+      });
+
+      await likeProtocolOwnerSigner
+        .newBookNFT2(
+          newBookNFTArgs,
+          // Beware the salt passed to contract call should be hexified
+          // to become uint
+          ethers.id(salt),
+        )
+        .then((tx) => tx.wait());
+
+      return NewClassEvent;
+    })();
+
+    expect(precomputedAddress).to.equal(newClassId);
+
+    // Expect the pre computed address contains the contract
+    const bookNFTContract = await this.BookNFT.connect(this.ownerSigner).attach(
+      precomputedAddress,
+    );
+    expect(await bookNFTContract.owner()).to.equal(this.ownerSigner.address);
+    expect(await bookNFTContract.name()).to.deep.equal("My Book");
+    expect(await bookNFTContract.symbol()).to.deep.equal("KOOB");
   });
 });

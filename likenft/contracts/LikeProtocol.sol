@@ -13,6 +13,7 @@ import {MsgNewBookNFT} from "../types/msgs/MsgNewBookNFT.sol";
 import {BookConfig} from "../types/BookConfig.sol";
 
 import {BookNFT} from "./BookNFT.sol";
+import {Create2BeaconProxy} from "./utils/create2/Create2BeaconProxy.sol";
 
 error ErrNftClassNotFound();
 interface BookNFTInterface {
@@ -24,6 +25,7 @@ contract LikeProtocol is
     UUPSUpgradeable,
     OwnableUpgradeable,
     PausableUpgradeable,
+    Create2BeaconProxy,
     IBeacon
 {
     struct LikeNFTStorage {
@@ -88,6 +90,20 @@ contract LikeProtocol is
         );
         BeaconProxy proxy = new BeaconProxy(address(this), initData);
         bookAddress = address(proxy);
+        $.classIdMapping[bookAddress] = true;
+        emit NewBookNFT(bookAddress, msgNewBookNFT.config);
+    }
+
+    function newBookNFT2(
+        MsgNewBookNFT memory msgNewBookNFT,
+        uint salt
+    ) public whenNotPaused returns (address bookAddress) {
+        LikeNFTStorage storage $ = _getLikeNFTStorage();
+        bytes memory initData = abi.encodeWithSelector(
+            BookNFTInterface.initialize.selector,
+            msgNewBookNFT
+        );
+        bookAddress = _create2BeaconProxy(address(this), initData, salt);
         $.classIdMapping[bookAddress] = true;
         emit NewBookNFT(bookAddress, msgNewBookNFT.config);
     }
