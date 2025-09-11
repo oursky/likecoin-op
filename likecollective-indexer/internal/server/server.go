@@ -15,6 +15,8 @@ type Server struct {
 	port int
 
 	db database.Service
+
+	alchemyWebhookSigningKey string
 }
 
 func NewServer() *http.Server {
@@ -34,6 +36,8 @@ func NewServer() *http.Server {
 		port: cfg.Port,
 
 		db: database.New(),
+
+		alchemyWebhookSigningKey: cfg.AlchemyWebhookSigningKey,
 	}
 
 	applyMiddlewares := middleware.MakeApplyMiddlewares(

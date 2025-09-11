@@ -1,0 +1,39 @@
+{
+  block {
+    hash,
+    number,
+    timestamp,
+    # Replace placeholder contract address to filter for logs
+    logs(filter: {addresses: ["0x3209704445C2D22198AcF0a2764e2dA047Dfa570"]}) { 
+      data,
+      topics,
+      index,
+      account {
+        address
+      },
+      transaction {
+        hash,
+        nonce,
+        index,
+        from {
+          address
+        },
+        to {
+          address
+        },
+        value,
+        gasPrice,
+        maxFeePerGas,
+        maxPriorityFeePerGas,
+        gas,
+        status,
+        gasUsed,
+        cumulativeGasUsed,
+        effectiveGasPrice,
+        createdContract {
+          address
+        }
+      }
+    }
+  }
+}
