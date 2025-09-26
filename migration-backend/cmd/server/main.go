@@ -1,9 +1,11 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"log/slog"
+	"math/big"
 	"net/http"
 	"os"
 	"time"
@@ -89,6 +91,18 @@ func main() {
 	ethClient, err := ethclient.Dial(envCfg.EthNetworkPublicRPCURL)
 	if err != nil {
 		panic(err)
+	}
+
+	envChainID, ok := big.NewInt(0).SetString(envCfg.APIResponseHeaderXChain, 10)
+	if !ok {
+		panic(fmt.Errorf("failed to parse API_RESPONSE_HEADER_X_CHAIN env: %s", envCfg.APIResponseHeaderXChain))
+	}
+	chainID, err := ethClient.ChainID(context.Background())
+	if err != nil {
+		panic(err)
+	}
+	if envChainID.Cmp(chainID) != 0 {
+		panic(fmt.Errorf("chainID mismatch: %d != %d", envChainID, chainID))
 	}
 
 	signer := signer.NewSignerClient(
