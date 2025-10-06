@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
@@ -15,10 +16,16 @@ import (
 
 func MakeNewBookNFTRequestBody(
 	contractAddress string,
+	salt [32]byte,
 	msgNewBookNFT like_protocol.MsgNewBookNFT,
+	royaltyFraction *big.Int,
 ) (*signer.CreateEvmTransactionRequestRequestBody, error) {
 	return signer.MakeCreateEvmTransactionRequestRequestBody(
-		like_protocol.LikeProtocolMetaData, "newBookNFT", msgNewBookNFT,
+		like_protocol.LikeProtocolMetaData,
+		"newBookNFT",
+		salt,
+		msgNewBookNFT,
+		royaltyFraction,
 	)(contractAddress)
 }
 
@@ -26,14 +33,16 @@ func (l *LikeProtocol) NewBookNFT(
 	ctx context.Context,
 	logger *slog.Logger,
 
+	salt [32]byte,
 	msgNewBookNFT like_protocol.MsgNewBookNFT,
+	royaltyFraction *big.Int,
 ) (*types.Transaction, *types.Receipt, error) {
 	logger.Info("NewBookNFT")
 
 	mylogger := logger.WithGroup("NewBookNFT")
 
 	r, err := MakeNewBookNFTRequestBody(
-		l.ContractAddress.Hex(), msgNewBookNFT,
+		l.ContractAddress.Hex(), salt, msgNewBookNFT, royaltyFraction,
 	)
 	if err != nil {
 		return nil, nil, err

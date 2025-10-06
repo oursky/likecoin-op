@@ -47,7 +47,7 @@ type MsgNewBookNFT struct {
 
 // LikeProtocolMetaData contains all meta data concerning the LikeProtocol contract.
 var LikeProtocolMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"}],\"name\":\"AddressEmptyCode\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"}],\"name\":\"BookNFTInvalidImplementation\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"}],\"name\":\"ERC1967InvalidImplementation\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ERC1967NonPayable\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"EnforcedPause\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ExpectedPause\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"FailedCall\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidInitialization\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NotInitializing\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"OwnableInvalidOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"OwnableUnauthorizedAccount\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"UUPSUnauthorizedCallContext\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"slot\",\"type\":\"bytes32\"}],\"name\":\"UUPSUnsupportedProxiableUUID\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"}],\"name\":\"BookNFTImplementationUpgraded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"version\",\"type\":\"uint64\"}],\"name\":\"Initialized\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"bookNFT\",\"type\":\"address\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"symbol\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"metadata\",\"type\":\"string\"},{\"internalType\":\"uint64\",\"name\":\"max_supply\",\"type\":\"uint64\"}],\"indexed\":false,\"internalType\":\"structBookConfig\",\"name\":\"config\",\"type\":\"tuple\"}],\"name\":\"NewBookNFT\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"Paused\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"Unpaused\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"}],\"name\":\"Upgraded\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"UPGRADE_INTERFACE_VERSION\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getRoyaltyReceiver\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"implementation\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"initialOwner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"bookNFTImplementation\",\"type\":\"address\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"classId\",\"type\":\"address\"}],\"name\":\"isBookNFT\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"address[]\",\"name\":\"updaters\",\"type\":\"address[]\"},{\"internalType\":\"address[]\",\"name\":\"minters\",\"type\":\"address[]\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"symbol\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"metadata\",\"type\":\"string\"},{\"internalType\":\"uint64\",\"name\":\"max_supply\",\"type\":\"uint64\"}],\"internalType\":\"structBookConfig\",\"name\":\"config\",\"type\":\"tuple\"}],\"internalType\":\"structMsgNewBookNFT\",\"name\":\"msgNewBookNFT\",\"type\":\"tuple\"}],\"name\":\"newBookNFT\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"bookAddress\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"address[]\",\"name\":\"updaters\",\"type\":\"address[]\"},{\"internalType\":\"address[]\",\"name\":\"minters\",\"type\":\"address[]\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"symbol\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"metadata\",\"type\":\"string\"},{\"internalType\":\"uint64\",\"name\":\"max_supply\",\"type\":\"uint64\"}],\"internalType\":\"structBookConfig\",\"name\":\"config\",\"type\":\"tuple\"}],\"internalType\":\"structMsgNewBookNFT\",\"name\":\"msgNewBookNFT\",\"type\":\"tuple\"},{\"internalType\":\"uint96\",\"name\":\"royaltyFraction\",\"type\":\"uint96\"}],\"name\":\"newBookNFTWithRoyalty\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"bookAddress\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"address[]\",\"name\":\"updaters\",\"type\":\"address[]\"},{\"internalType\":\"address[]\",\"name\":\"minters\",\"type\":\"address[]\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"symbol\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"metadata\",\"type\":\"string\"},{\"internalType\":\"uint64\",\"name\":\"max_supply\",\"type\":\"uint64\"}],\"internalType\":\"structBookConfig\",\"name\":\"config\",\"type\":\"tuple\"}],\"internalType\":\"structMsgNewBookNFT[]\",\"name\":\"msgNewBookNFTs\",\"type\":\"tuple[]\"}],\"name\":\"newBookNFTs\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"pause\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"paused\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"proxiableUUID\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"royaltyReceiver\",\"type\":\"address\"}],\"name\":\"setRoyaltyReceiver\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"unpause\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"}],\"name\":\"upgradeTo\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"upgradeToAndCall\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"}],\"name\":\"AddressEmptyCode\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"}],\"name\":\"BookNFTInvalidImplementation\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"Create2EmptyBytecode\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"}],\"name\":\"ERC1967InvalidImplementation\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ERC1967NonPayable\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"EnforcedPause\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ErrInvalidSalt\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ExpectedPause\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"FailedCall\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"FailedDeployment\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"balance\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"needed\",\"type\":\"uint256\"}],\"name\":\"InsufficientBalance\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidInitialization\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NotInitializing\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"OwnableInvalidOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"OwnableUnauthorizedAccount\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"UUPSUnauthorizedCallContext\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"slot\",\"type\":\"bytes32\"}],\"name\":\"UUPSUnsupportedProxiableUUID\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"}],\"name\":\"BookNFTImplementationUpgraded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"version\",\"type\":\"uint64\"}],\"name\":\"Initialized\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"bookNFT\",\"type\":\"address\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"symbol\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"metadata\",\"type\":\"string\"},{\"internalType\":\"uint64\",\"name\":\"max_supply\",\"type\":\"uint64\"}],\"indexed\":false,\"internalType\":\"structBookConfig\",\"name\":\"config\",\"type\":\"tuple\"}],\"name\":\"NewBookNFT\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"Paused\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"Unpaused\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"}],\"name\":\"Upgraded\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"UPGRADE_INTERFACE_VERSION\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getRoyaltyReceiver\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"implementation\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"initialOwner\",\"type\":\"address\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"classId\",\"type\":\"address\"}],\"name\":\"isBookNFT\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"salt\",\"type\":\"bytes32\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"address[]\",\"name\":\"updaters\",\"type\":\"address[]\"},{\"internalType\":\"address[]\",\"name\":\"minters\",\"type\":\"address[]\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"symbol\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"metadata\",\"type\":\"string\"},{\"internalType\":\"uint64\",\"name\":\"max_supply\",\"type\":\"uint64\"}],\"internalType\":\"structBookConfig\",\"name\":\"config\",\"type\":\"tuple\"}],\"internalType\":\"structMsgNewBookNFT\",\"name\":\"msgNewBookNFT\",\"type\":\"tuple\"},{\"internalType\":\"uint96\",\"name\":\"royaltyFraction\",\"type\":\"uint96\"}],\"name\":\"newBookNFT\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"bookAddress\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"pause\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"paused\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"salt\",\"type\":\"bytes32\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"address[]\",\"name\":\"updaters\",\"type\":\"address[]\"},{\"internalType\":\"address[]\",\"name\":\"minters\",\"type\":\"address[]\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"symbol\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"metadata\",\"type\":\"string\"},{\"internalType\":\"uint64\",\"name\":\"max_supply\",\"type\":\"uint64\"}],\"internalType\":\"structBookConfig\",\"name\":\"config\",\"type\":\"tuple\"}],\"internalType\":\"structMsgNewBookNFT\",\"name\":\"msgNewBookNFT\",\"type\":\"tuple\"}],\"name\":\"precomputeBookNFTAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"bookAddress\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"proxiableUUID\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"royaltyReceiver\",\"type\":\"address\"}],\"name\":\"setRoyaltyReceiver\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"unpause\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"}],\"name\":\"upgradeTo\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"upgradeToAndCall\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"}]",
 }
 
 // LikeProtocolABI is the input ABI used to generate the binding from.
@@ -382,6 +382,37 @@ func (_LikeProtocol *LikeProtocolCallerSession) Paused() (bool, error) {
 	return _LikeProtocol.Contract.Paused(&_LikeProtocol.CallOpts)
 }
 
+// PrecomputeBookNFTAddress is a free data retrieval call binding the contract method 0x96cdf411.
+//
+// Solidity: function precomputeBookNFTAddress(bytes32 salt, (address,address[],address[],(string,string,string,uint64)) msgNewBookNFT) view returns(address bookAddress)
+func (_LikeProtocol *LikeProtocolCaller) PrecomputeBookNFTAddress(opts *bind.CallOpts, salt [32]byte, msgNewBookNFT MsgNewBookNFT) (common.Address, error) {
+	var out []interface{}
+	err := _LikeProtocol.contract.Call(opts, &out, "precomputeBookNFTAddress", salt, msgNewBookNFT)
+
+	if err != nil {
+		return *new(common.Address), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(common.Address)).(*common.Address)
+
+	return out0, err
+
+}
+
+// PrecomputeBookNFTAddress is a free data retrieval call binding the contract method 0x96cdf411.
+//
+// Solidity: function precomputeBookNFTAddress(bytes32 salt, (address,address[],address[],(string,string,string,uint64)) msgNewBookNFT) view returns(address bookAddress)
+func (_LikeProtocol *LikeProtocolSession) PrecomputeBookNFTAddress(salt [32]byte, msgNewBookNFT MsgNewBookNFT) (common.Address, error) {
+	return _LikeProtocol.Contract.PrecomputeBookNFTAddress(&_LikeProtocol.CallOpts, salt, msgNewBookNFT)
+}
+
+// PrecomputeBookNFTAddress is a free data retrieval call binding the contract method 0x96cdf411.
+//
+// Solidity: function precomputeBookNFTAddress(bytes32 salt, (address,address[],address[],(string,string,string,uint64)) msgNewBookNFT) view returns(address bookAddress)
+func (_LikeProtocol *LikeProtocolCallerSession) PrecomputeBookNFTAddress(salt [32]byte, msgNewBookNFT MsgNewBookNFT) (common.Address, error) {
+	return _LikeProtocol.Contract.PrecomputeBookNFTAddress(&_LikeProtocol.CallOpts, salt, msgNewBookNFT)
+}
+
 // ProxiableUUID is a free data retrieval call binding the contract method 0x52d1902d.
 //
 // Solidity: function proxiableUUID() view returns(bytes32)
@@ -413,88 +444,46 @@ func (_LikeProtocol *LikeProtocolCallerSession) ProxiableUUID() ([32]byte, error
 	return _LikeProtocol.Contract.ProxiableUUID(&_LikeProtocol.CallOpts)
 }
 
-// Initialize is a paid mutator transaction binding the contract method 0x485cc955.
+// Initialize is a paid mutator transaction binding the contract method 0xc4d66de8.
 //
-// Solidity: function initialize(address initialOwner, address bookNFTImplementation) returns()
-func (_LikeProtocol *LikeProtocolTransactor) Initialize(opts *bind.TransactOpts, initialOwner common.Address, bookNFTImplementation common.Address) (*types.Transaction, error) {
-	return _LikeProtocol.contract.Transact(opts, "initialize", initialOwner, bookNFTImplementation)
+// Solidity: function initialize(address initialOwner) returns()
+func (_LikeProtocol *LikeProtocolTransactor) Initialize(opts *bind.TransactOpts, initialOwner common.Address) (*types.Transaction, error) {
+	return _LikeProtocol.contract.Transact(opts, "initialize", initialOwner)
 }
 
-// Initialize is a paid mutator transaction binding the contract method 0x485cc955.
+// Initialize is a paid mutator transaction binding the contract method 0xc4d66de8.
 //
-// Solidity: function initialize(address initialOwner, address bookNFTImplementation) returns()
-func (_LikeProtocol *LikeProtocolSession) Initialize(initialOwner common.Address, bookNFTImplementation common.Address) (*types.Transaction, error) {
-	return _LikeProtocol.Contract.Initialize(&_LikeProtocol.TransactOpts, initialOwner, bookNFTImplementation)
+// Solidity: function initialize(address initialOwner) returns()
+func (_LikeProtocol *LikeProtocolSession) Initialize(initialOwner common.Address) (*types.Transaction, error) {
+	return _LikeProtocol.Contract.Initialize(&_LikeProtocol.TransactOpts, initialOwner)
 }
 
-// Initialize is a paid mutator transaction binding the contract method 0x485cc955.
+// Initialize is a paid mutator transaction binding the contract method 0xc4d66de8.
 //
-// Solidity: function initialize(address initialOwner, address bookNFTImplementation) returns()
-func (_LikeProtocol *LikeProtocolTransactorSession) Initialize(initialOwner common.Address, bookNFTImplementation common.Address) (*types.Transaction, error) {
-	return _LikeProtocol.Contract.Initialize(&_LikeProtocol.TransactOpts, initialOwner, bookNFTImplementation)
+// Solidity: function initialize(address initialOwner) returns()
+func (_LikeProtocol *LikeProtocolTransactorSession) Initialize(initialOwner common.Address) (*types.Transaction, error) {
+	return _LikeProtocol.Contract.Initialize(&_LikeProtocol.TransactOpts, initialOwner)
 }
 
-// NewBookNFT is a paid mutator transaction binding the contract method 0xa43e8cfa.
+// NewBookNFT is a paid mutator transaction binding the contract method 0x989a27d8.
 //
-// Solidity: function newBookNFT((address,address[],address[],(string,string,string,uint64)) msgNewBookNFT) returns(address bookAddress)
-func (_LikeProtocol *LikeProtocolTransactor) NewBookNFT(opts *bind.TransactOpts, msgNewBookNFT MsgNewBookNFT) (*types.Transaction, error) {
-	return _LikeProtocol.contract.Transact(opts, "newBookNFT", msgNewBookNFT)
+// Solidity: function newBookNFT(bytes32 salt, (address,address[],address[],(string,string,string,uint64)) msgNewBookNFT, uint96 royaltyFraction) returns(address bookAddress)
+func (_LikeProtocol *LikeProtocolTransactor) NewBookNFT(opts *bind.TransactOpts, salt [32]byte, msgNewBookNFT MsgNewBookNFT, royaltyFraction *big.Int) (*types.Transaction, error) {
+	return _LikeProtocol.contract.Transact(opts, "newBookNFT", salt, msgNewBookNFT, royaltyFraction)
 }
 
-// NewBookNFT is a paid mutator transaction binding the contract method 0xa43e8cfa.
+// NewBookNFT is a paid mutator transaction binding the contract method 0x989a27d8.
 //
-// Solidity: function newBookNFT((address,address[],address[],(string,string,string,uint64)) msgNewBookNFT) returns(address bookAddress)
-func (_LikeProtocol *LikeProtocolSession) NewBookNFT(msgNewBookNFT MsgNewBookNFT) (*types.Transaction, error) {
-	return _LikeProtocol.Contract.NewBookNFT(&_LikeProtocol.TransactOpts, msgNewBookNFT)
+// Solidity: function newBookNFT(bytes32 salt, (address,address[],address[],(string,string,string,uint64)) msgNewBookNFT, uint96 royaltyFraction) returns(address bookAddress)
+func (_LikeProtocol *LikeProtocolSession) NewBookNFT(salt [32]byte, msgNewBookNFT MsgNewBookNFT, royaltyFraction *big.Int) (*types.Transaction, error) {
+	return _LikeProtocol.Contract.NewBookNFT(&_LikeProtocol.TransactOpts, salt, msgNewBookNFT, royaltyFraction)
 }
 
-// NewBookNFT is a paid mutator transaction binding the contract method 0xa43e8cfa.
+// NewBookNFT is a paid mutator transaction binding the contract method 0x989a27d8.
 //
-// Solidity: function newBookNFT((address,address[],address[],(string,string,string,uint64)) msgNewBookNFT) returns(address bookAddress)
-func (_LikeProtocol *LikeProtocolTransactorSession) NewBookNFT(msgNewBookNFT MsgNewBookNFT) (*types.Transaction, error) {
-	return _LikeProtocol.Contract.NewBookNFT(&_LikeProtocol.TransactOpts, msgNewBookNFT)
-}
-
-// NewBookNFTWithRoyalty is a paid mutator transaction binding the contract method 0x498a1c33.
-//
-// Solidity: function newBookNFTWithRoyalty((address,address[],address[],(string,string,string,uint64)) msgNewBookNFT, uint96 royaltyFraction) returns(address bookAddress)
-func (_LikeProtocol *LikeProtocolTransactor) NewBookNFTWithRoyalty(opts *bind.TransactOpts, msgNewBookNFT MsgNewBookNFT, royaltyFraction *big.Int) (*types.Transaction, error) {
-	return _LikeProtocol.contract.Transact(opts, "newBookNFTWithRoyalty", msgNewBookNFT, royaltyFraction)
-}
-
-// NewBookNFTWithRoyalty is a paid mutator transaction binding the contract method 0x498a1c33.
-//
-// Solidity: function newBookNFTWithRoyalty((address,address[],address[],(string,string,string,uint64)) msgNewBookNFT, uint96 royaltyFraction) returns(address bookAddress)
-func (_LikeProtocol *LikeProtocolSession) NewBookNFTWithRoyalty(msgNewBookNFT MsgNewBookNFT, royaltyFraction *big.Int) (*types.Transaction, error) {
-	return _LikeProtocol.Contract.NewBookNFTWithRoyalty(&_LikeProtocol.TransactOpts, msgNewBookNFT, royaltyFraction)
-}
-
-// NewBookNFTWithRoyalty is a paid mutator transaction binding the contract method 0x498a1c33.
-//
-// Solidity: function newBookNFTWithRoyalty((address,address[],address[],(string,string,string,uint64)) msgNewBookNFT, uint96 royaltyFraction) returns(address bookAddress)
-func (_LikeProtocol *LikeProtocolTransactorSession) NewBookNFTWithRoyalty(msgNewBookNFT MsgNewBookNFT, royaltyFraction *big.Int) (*types.Transaction, error) {
-	return _LikeProtocol.Contract.NewBookNFTWithRoyalty(&_LikeProtocol.TransactOpts, msgNewBookNFT, royaltyFraction)
-}
-
-// NewBookNFTs is a paid mutator transaction binding the contract method 0xd274a43f.
-//
-// Solidity: function newBookNFTs((address,address[],address[],(string,string,string,uint64))[] msgNewBookNFTs) returns()
-func (_LikeProtocol *LikeProtocolTransactor) NewBookNFTs(opts *bind.TransactOpts, msgNewBookNFTs []MsgNewBookNFT) (*types.Transaction, error) {
-	return _LikeProtocol.contract.Transact(opts, "newBookNFTs", msgNewBookNFTs)
-}
-
-// NewBookNFTs is a paid mutator transaction binding the contract method 0xd274a43f.
-//
-// Solidity: function newBookNFTs((address,address[],address[],(string,string,string,uint64))[] msgNewBookNFTs) returns()
-func (_LikeProtocol *LikeProtocolSession) NewBookNFTs(msgNewBookNFTs []MsgNewBookNFT) (*types.Transaction, error) {
-	return _LikeProtocol.Contract.NewBookNFTs(&_LikeProtocol.TransactOpts, msgNewBookNFTs)
-}
-
-// NewBookNFTs is a paid mutator transaction binding the contract method 0xd274a43f.
-//
-// Solidity: function newBookNFTs((address,address[],address[],(string,string,string,uint64))[] msgNewBookNFTs) returns()
-func (_LikeProtocol *LikeProtocolTransactorSession) NewBookNFTs(msgNewBookNFTs []MsgNewBookNFT) (*types.Transaction, error) {
-	return _LikeProtocol.Contract.NewBookNFTs(&_LikeProtocol.TransactOpts, msgNewBookNFTs)
+// Solidity: function newBookNFT(bytes32 salt, (address,address[],address[],(string,string,string,uint64)) msgNewBookNFT, uint96 royaltyFraction) returns(address bookAddress)
+func (_LikeProtocol *LikeProtocolTransactorSession) NewBookNFT(salt [32]byte, msgNewBookNFT MsgNewBookNFT, royaltyFraction *big.Int) (*types.Transaction, error) {
+	return _LikeProtocol.Contract.NewBookNFT(&_LikeProtocol.TransactOpts, salt, msgNewBookNFT, royaltyFraction)
 }
 
 // Pause is a paid mutator transaction binding the contract method 0x8456cb59.

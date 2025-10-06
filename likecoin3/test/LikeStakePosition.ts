@@ -1,41 +1,9 @@
 import { loadFixture } from "@nomicfoundation/hardhat-toolbox-viem/network-helpers";
 import { expect } from "chai";
 import { viem, ignition } from "hardhat";
-import LikeStakePositionModule from "../ignition/modules/LikeStakePosition";
+import { deployLSP } from "./factory";
 
 describe("LikeStakePosition", async function () {
-  async function deployLSP() {
-    const [deployer, rick, kin] = await viem.getWalletClients();
-    const publicClient = await viem.getPublicClient();
-
-    const { likeStakePosition, likeStakePositionImpl } = await ignition.deploy(
-      LikeStakePositionModule,
-      {
-        parameters: {
-          LikecoinModule: {
-            initOwner: deployer.account.address,
-          },
-          LikeCollectiveV0Module: {
-            initOwner: deployer.account.address,
-          },
-          LikeStakePositionV0Module: {
-            initOwner: deployer.account.address,
-          },
-        },
-        defaultSender: deployer.account.address,
-      },
-    );
-
-    return {
-      likeStakePosition,
-      likeStakePositionImpl,
-      deployer,
-      rick,
-      kin,
-      publicClient,
-    };
-  }
-
   describe("Initialization & Ownership", async function () {
     it("should initialize with correct owner", async function () {
       const { likeStakePosition, deployer } = await loadFixture(deployLSP);
@@ -286,6 +254,161 @@ describe("LikeStakePosition", async function () {
       ]);
       expect(positionsBob.length).to.equal(1);
       expect(positionsBob[0]).to.equal(1n);
+    });
+  });
+
+  describe("position info view functions", async function () {
+    async function preparePositionInfoData() {
+      const { likeStakePosition, deployer, rick, kin } =
+        await loadFixture(deployLSP);
+      const bookNFT1 = "0x1111111111111111111111111111111111111111";
+      const bookNFT2 = "0x2222222222222222222222222222222222222222";
+
+      await likeStakePosition.write.setManager([deployer.account.address], {
+        account: deployer.account,
+      });
+
+      const mintArray = [
+        {
+          bookNFT: bookNFT1,
+          stakedAmount: 10n,
+          rewardIndex: 1n,
+          initialStaker: rick,
+        },
+        {
+          bookNFT: bookNFT1,
+          stakedAmount: 20n,
+          rewardIndex: 2n,
+          initialStaker: rick,
+        },
+        {
+          bookNFT: bookNFT2,
+          stakedAmount: 30n,
+          rewardIndex: 3n,
+          initialStaker: rick,
+        },
+        {
+          bookNFT: bookNFT1,
+          stakedAmount: 40n,
+          rewardIndex: 4n,
+          initialStaker: kin,
+        },
+      ];
+
+      for (const info of mintArray) {
+        await likeStakePosition.write.mintPosition(
+          [
+            info.initialStaker.account.address,
+            info.bookNFT,
+            info.stakedAmount,
+            info.rewardIndex,
+          ],
+          { account: deployer.account },
+        );
+      }
+
+      return {
+        likeStakePosition,
+        deployer,
+        rick,
+        kin,
+        mintArray,
+        bookNFT1,
+        bookNFT2,
+      };
+    }
+
+    it("should return correct position info", async function () {
+      const { likeStakePosition, deployer, rick, kin, mintArray } =
+        await loadFixture(preparePositionInfoData);
+      const infoArray = [];
+      for (let i = 0; i < mintArray.length; i++) {
+        infoArray.push(await likeStakePosition.read.positionInfo([i]));
+      }
+      for (let i = 0; i < infoArray.length; i++) {
+        expect(
+          infoArray[i].initialStaker.toLowerCase(),
+          "initialStaker is same",
+        ).to.equal(mintArray[i].initialStaker.account.address.toLowerCase());
+        expect(infoArray[i].bookNFT, "bookNFT is same").to.equal(
+          mintArray[i].bookNFT,
+        );
+        expect(infoArray[i].stakedAmount, "stakedAmount is same").to.equal(
+          mintArray[i].stakedAmount,
+        );
+        expect(infoArray[i].rewardIndex, "rewardIndex is same").to.equal(
+          mintArray[i].rewardIndex,
+        );
+      }
+    });
+
+    it("should return correct position info by user", async function () {
+      const { likeStakePosition, rick, bookNFT1, bookNFT2 } = await loadFixture(
+        preparePositionInfoData,
+      );
+      const positionArray = await likeStakePosition.read.getUserPositions([
+        rick.account.address,
+      ]);
+      expect(positionArray.length, "Rick have 3 positions").to.equal(3);
+      const pos1 = await likeStakePosition.read.getPosition([positionArray[0]]);
+      const pos2 = await likeStakePosition.read.getPosition([positionArray[1]]);
+      const pos3 = await likeStakePosition.read.getPosition([positionArray[2]]);
+      expect(pos1.bookNFT).to.equal(bookNFT1);
+      expect(pos2.bookNFT).to.equal(bookNFT1);
+      expect(pos3.bookNFT).to.equal(bookNFT2);
+    });
+
+    it("should return correct position info by user and bookNFT", async function () {
+      const { likeStakePosition, rick, bookNFT1, bookNFT2 } = await loadFixture(
+        preparePositionInfoData,
+      );
+      const positionArray =
+        await likeStakePosition.read.getUserPositionByBookNFT([
+          rick.account.address,
+          bookNFT1,
+        ]);
+      expect(
+        positionArray.length,
+        "Rick have 2 positions on BookNFT1",
+      ).to.equal(2);
+      const pos1 = await likeStakePosition.read.getPosition([positionArray[0]]);
+      const pos2 = await likeStakePosition.read.getPosition([positionArray[1]]);
+      expect(pos1.bookNFT).to.equal(bookNFT1);
+      expect(pos2.bookNFT).to.equal(bookNFT1);
+
+      const positionArrayByBookNFT2 =
+        await likeStakePosition.read.getUserPositionByBookNFT([
+          rick.account.address,
+          bookNFT2,
+        ]);
+      expect(
+        positionArrayByBookNFT2.length,
+        "Rick have 1 positions on BookNFT2",
+      ).to.equal(1);
+      const pos3 = await likeStakePosition.read.getPosition([
+        positionArrayByBookNFT2[0],
+      ]);
+      expect(pos3.bookNFT).to.equal(bookNFT2);
+    });
+
+    it("should return correct position after ERC721 transfer", async function () {
+      const { likeStakePosition, rick, kin, bookNFT1, bookNFT2 } =
+        await loadFixture(preparePositionInfoData);
+      await likeStakePosition.write.transferFrom(
+        [rick.account.address, kin.account.address, 1n],
+        { account: rick.account },
+      );
+      const positionArray = await likeStakePosition.read.getUserPositions([
+        rick.account.address,
+      ]);
+      expect(
+        positionArray.length,
+        "Rick have 2 positions after transfer",
+      ).to.equal(2);
+      const pos1 = await likeStakePosition.read.getPosition([positionArray[0]]);
+      const pos2 = await likeStakePosition.read.getPosition([positionArray[1]]);
+      expect(pos1.bookNFT).to.equal(bookNFT1);
+      expect(pos2.bookNFT).to.equal(bookNFT2);
     });
   });
 
