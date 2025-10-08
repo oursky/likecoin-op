@@ -18,6 +18,7 @@ type EnvConfig struct {
 	BaseEthSignerAddress          string `envconfig:"BASE_ETH_SIGNER_ADDRESS"`
 	BaseEthSignerBaseUrl          string `envconfig:"BASE_ETH_SIGNER_BASE_URL"`
 	BaseEthSignerAPIKey           string `envconfig:"BASE_ETH_SIGNER_API_KEY"`
+	BaseEthAdditionalMinters      string `envconfig:"BASE_ETH_ADDITIONAL_MINTERS"`
 	BaseEthLikeNFTContractAddress string `envconfig:"BASE_ETH_LIKENFT_CONTRACT_ADDRESS"`
 }
 

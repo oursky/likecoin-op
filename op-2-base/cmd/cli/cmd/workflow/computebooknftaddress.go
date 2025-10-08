@@ -7,8 +7,9 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/likecoin/likecoin-op/op-2-base/internal/util/creationcode"
 	"github.com/spf13/cobra"
+
+	"github.com/likecoin/likecoin-op/op-2-base/internal/util/creationcode"
 )
 
 var computeBookNFTAddressCmd = &cobra.Command{

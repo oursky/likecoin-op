@@ -52,6 +52,15 @@ var PrepareActionsCmd = &cobra.Command{
 		signerAddressStr := envCfg.BaseEthSignerAddress
 		signerAddress := common.HexToAddress(signerAddressStr)
 
+		additionalMintersAddresses := make([]common.Address, 0)
+		if envCfg.BaseEthAdditionalMinters != "" {
+			additionalMintersStr := envCfg.BaseEthAdditionalMinters
+			additionalMinters := strings.Split(additionalMintersStr, ",")
+			for _, minter := range additionalMinters {
+				additionalMintersAddresses = append(additionalMintersAddresses, common.HexToAddress(minter))
+			}
+		}
+
 		logger := slog.New(slog.Default().Handler()).
 			WithGroup("PrepareActionsCmd").
 			With("indexerDumpPath", indexerDumpPath).
@@ -171,6 +180,7 @@ var PrepareActionsCmd = &cobra.Command{
 			creationcode.NewCreationCode(byteCodeData),
 			likeProtocolAddress,
 			signerAddress,
+			additionalMintersAddresses,
 		)
 
 		logger = logger.With("count", len(bookNFTInputs))

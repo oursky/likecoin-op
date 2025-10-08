@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"slices"
 
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
@@ -36,22 +37,22 @@ const (
 	UpdaterRole Role = "UPDATER_ROLE"
 )
 
-func ComputeGrantedAddresses(role Role, events []Output) []string {
+func ComputeGrantedAddresses(role Role, events []Output) []common.Address {
 	roleBytes := crypto.Keccak256([]byte(role))
 	roleBytesArrayString := fmt.Sprintf("%v", roleBytes)
 
 	orderedEvents := orderEvents(events)
 
-	addresses := make([]string, 0)
+	addresses := make([]common.Address, 0)
 	for _, event := range orderedEvents {
 		switch event.EventType {
 		case EventTypeRoleGranted:
 			if event.RoleBytesArrayString == roleBytesArrayString {
-				addresses = append(addresses, event.To)
+				addresses = append(addresses, common.HexToAddress(event.To))
 			}
 		case EventTypeRoleRevoked:
 			if event.RoleBytesArrayString == roleBytesArrayString {
-				addresses = slices.Delete(addresses, slices.Index(addresses, event.To), 1)
+				addresses = slices.Delete(addresses, slices.Index(addresses, common.HexToAddress(event.To)), 1)
 			}
 		}
 	}

@@ -34,6 +34,7 @@ type prepareNewNFTClassAction struct {
 	creationCode           creationcode.CreationCode
 	protocolAddress        common.Address
 	signerAddress          common.Address
+	additionalMinters      []common.Address
 }
 
 func NewPrepareNewNFTClassAction(
@@ -42,6 +43,7 @@ func NewPrepareNewNFTClassAction(
 	creationCode creationcode.CreationCode,
 	protocolAddress common.Address,
 	signerAddress common.Address,
+	additionalMinters []common.Address,
 ) PrepareNewNFTClassAction {
 	return &prepareNewNFTClassAction{
 		httpClient,
@@ -49,6 +51,7 @@ func NewPrepareNewNFTClassAction(
 		creationCode,
 		protocolAddress,
 		signerAddress,
+		additionalMinters,
 	}
 }
 
@@ -97,12 +100,28 @@ func (p *prepareNewNFTClassAction) Prepare(
 	grantedUpdaters := preparerolechangeevents.ComputeGrantedAddresses(preparerolechangeevents.UpdaterRole, input.RoleChangeEvents)
 
 	// Grant signer to minters for airdropping underlying nfts
-	if !slices.Contains(grantedMinters, p.signerAddress.Hex()) {
-		grantedMinters = append(grantedMinters, p.signerAddress.Hex())
+	if !slices.Contains(grantedMinters, p.signerAddress) {
+		grantedMinters = append(grantedMinters, p.signerAddress)
 	}
 
-	initialMinters := grantedMinters
-	initialUpdaters := grantedUpdaters
+	if len(p.additionalMinters) > 0 {
+		for _, additionalMinter := range p.additionalMinters {
+			if !slices.Contains(grantedMinters, additionalMinter) {
+				grantedMinters = append(grantedMinters, additionalMinter)
+			}
+		}
+	}
+
+	initialMinters := make([]string, 0)
+	for _, minter := range grantedMinters {
+		initialMinters = append(initialMinters, minter.Hex())
+	}
+
+	initialUpdaters := make([]string, 0)
+	for _, updater := range grantedUpdaters {
+		initialUpdaters = append(initialUpdaters, updater.Hex())
+	}
+
 	initialBatchMintOwner := p.signerAddress.Hex()
 	defaultRoyaltyFraction := p.defaultRoyaltyFraction
 	shouldPremintAllNFTs := false
