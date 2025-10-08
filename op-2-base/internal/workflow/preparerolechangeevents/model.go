@@ -45,15 +45,20 @@ func ComputeGrantedAddresses(role Role, events []Output) []common.Address {
 
 	addresses := make([]common.Address, 0)
 	for _, event := range orderedEvents {
+		if event.RoleBytesArrayString != roleBytesArrayString {
+			continue
+		}
+
+		toAddress := common.HexToAddress(event.To)
+		if toAddress == (common.Address{}) {
+			continue
+		}
+
 		switch event.EventType {
 		case EventTypeRoleGranted:
-			if event.RoleBytesArrayString == roleBytesArrayString {
-				addresses = append(addresses, common.HexToAddress(event.To))
-			}
+			addresses = append(addresses, toAddress)
 		case EventTypeRoleRevoked:
-			if event.RoleBytesArrayString == roleBytesArrayString {
-				addresses = slices.Delete(addresses, slices.Index(addresses, common.HexToAddress(event.To)), 1)
-			}
+			addresses = slices.Delete(addresses, slices.Index(addresses, toAddress), 1)
 		}
 	}
 
