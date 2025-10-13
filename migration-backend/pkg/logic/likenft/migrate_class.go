@@ -205,7 +205,7 @@ func MigrateClass(
 		return nil, err
 	}
 
-	if evmOwner != initialClassOwner {
+	if evmOwner != newClassAction.InitialOwner {
 		transferClassAction, err := GetOrCreateTransferClassAction(
 			db, *newClassAction.EvmClassId, cosmosOwner, evmOwner,
 		)
