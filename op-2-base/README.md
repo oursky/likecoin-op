@@ -338,8 +338,7 @@ psql "$BASE_DB_CONNECTION_STR" < migration-backend-op.pg_dump
 - Execute statements
 
 ```bash
-mkdir migration-results
-ls migrations | xargs -n 1 -I {} bash -c 'psql $BASE_DB_CONNECTION_STR < migrations/{} > migration-results/{}'
+./migrate.sh
 ```
 
 # Troubleshooting
