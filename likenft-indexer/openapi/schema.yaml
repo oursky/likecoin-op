@@ -891,6 +891,8 @@ components:
           format: date-time
         owner:
           $ref: "#/components/schemas/Account"
+        token_id:
+          $ref: "#/components/schemas/Uint64"
       required:
         - id
         - address

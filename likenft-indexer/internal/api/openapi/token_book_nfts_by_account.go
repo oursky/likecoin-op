@@ -23,7 +23,7 @@ func (h *OpenAPIHandler) TokenBookNFTsByAccount(ctx context.Context, params api.
 		params.ContractLevelMetadataNeq.Or(api.ContractLevelMetadataNEQ{}),
 	)
 
-	nftClasses, count, nextKey, err := h.nftClassRepository.QueryNFTClassesByAccountTokens(
+	nftClassWithTokenIDs, count, nextKey, err := h.nftClassRepository.QueryNFTClassesByAccountTokensWithNFTID(
 		ctx,
 		params.EvmAddress,
 		metadataEQ,
@@ -35,10 +35,10 @@ func (h *OpenAPIHandler) TokenBookNFTsByAccount(ctx context.Context, params api.
 		return nil, err
 	}
 
-	apiBookNFTs := make([]api.BookNFT, len(nftClasses))
+	apiBookNFTs := make([]api.BookNFT, len(nftClassWithTokenIDs))
 
-	for i, nftClass := range nftClasses {
-		apiNFTClass, err := model.MakeNFTClass(nftClass)
+	for i, nftClassWithTokenID := range nftClassWithTokenIDs {
+		apiNFTClass, err := model.MakeNFTClassWithTokenID(nftClassWithTokenID.NFTClass, nftClassWithTokenID.NFTID)
 		if err != nil {
 			return nil, err
 		}

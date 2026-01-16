@@ -96,6 +96,7 @@ type BookNFT struct {
 	MintedAt            time.Time                `json:"minted_at"`
 	UpdatedAt           time.Time                `json:"updated_at"`
 	Owner               OptAccount               `json:"owner"`
+	TokenID             OptUint64                `json:"token_id"`
 }
 
 // GetID returns the value of ID.
@@ -178,6 +179,11 @@ func (s *BookNFT) GetOwner() OptAccount {
 	return s.Owner
 }
 
+// GetTokenID returns the value of TokenID.
+func (s *BookNFT) GetTokenID() OptUint64 {
+	return s.TokenID
+}
+
 // SetID sets the value of ID.
 func (s *BookNFT) SetID(val int) {
 	s.ID = val
@@ -256,6 +262,11 @@ func (s *BookNFT) SetUpdatedAt(val time.Time) {
 // SetOwner sets the value of Owner.
 func (s *BookNFT) SetOwner(val OptAccount) {
 	s.Owner = val
+}
+
+// SetTokenID sets the value of TokenID.
+func (s *BookNFT) SetTokenID(val OptUint64) {
+	s.TokenID = val
 }
 
 type BookNFTsByAccountOK struct {
@@ -1724,6 +1735,52 @@ func (o OptString) Get() (v string, ok bool) {
 
 // Or returns value if set, or given parameter if does not.
 func (o OptString) Or(d string) string {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptUint64 returns new OptUint64 with value set to v.
+func NewOptUint64(v Uint64) OptUint64 {
+	return OptUint64{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptUint64 is optional Uint64.
+type OptUint64 struct {
+	Value Uint64
+	Set   bool
+}
+
+// IsSet returns true if OptUint64 was set.
+func (o OptUint64) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptUint64) Reset() {
+	var v Uint64
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptUint64) SetTo(v Uint64) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptUint64) Get() (v Uint64, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptUint64) Or(d Uint64) Uint64 {
 	if v, ok := o.Get(); ok {
 		return v
 	}
