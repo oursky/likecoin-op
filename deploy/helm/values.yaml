@@ -21,7 +21,10 @@ likecoinMigration:
     tls:
       secretName: tls-likecoin-migration
 
-  resources: {}
+  resources:
+    requests:
+      cpu: "10m"
+      memory: "10Mi"
 
 likenftMigration:
   enabled: true
@@ -40,7 +43,10 @@ likenftMigration:
     tls:
       secretName: tls-likenft-migration
 
-  resources: {}
+  resources:
+    requests:
+      cpu: "10m"
+      memory: "10Mi"
 
 migrationAdmin:
   enabled: true
@@ -49,7 +55,7 @@ migrationAdmin:
   initContainer:
     imageRepository: nginx:alpine
     imagePullPolicy: IfNotPresent
-    
+
   container:
     imageRepository: likecoin/migration-admin
     imagePullPolicy: IfNotPresent
@@ -64,7 +70,10 @@ migrationAdmin:
     tls:
       secretName: tls-migration-admin
 
-  resources: {}
+  resources:
+    requests:
+      cpu: "10m"
+      memory: "10Mi"
 
 migrationBackend:
   name: migration-backend
@@ -90,17 +99,26 @@ migrationBackend:
     tls:
       secretName: tls-migration-backend
 
-  resources: {}
+  resources:
+    requests:
+      cpu: "10m"
+      memory: "20Mi"
 
   worker:
     name: migration-backend-worker
 
-    resources: {}
+    resources:
+      requests:
+        cpu: "10m"
+        memory: "20Mi"
 
   scheduler:
     name: migration-backend-scheduler
 
-    resources: {}
+    resources:
+      requests:
+        cpu: "10m"
+        memory: "10Mi"
 
 signerBackend:
   name: signer-backend
@@ -116,7 +134,10 @@ signerBackend:
   service:
     port: 80
 
-  resources: {}
+  resources:
+    requests:
+      cpu: "10m"
+      memory: "10Mi"
 
 likenftIndexer:
   name: likenft-indexer
@@ -138,34 +159,52 @@ likenftIndexer:
       tls:
         secretName: tls-likenft-indexer
 
-    resources: {}
+    resources:
+      requests:
+        cpu: "10m"
+        memory: "20Mi"
 
   worker:
     enabled: true
     deployments:
       periodic:
-        resources: {}
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "10Mi"
         tasks:
           - acquire-book-nft-events
           - acquire-like-protocol-events
           - check-like-protocol
           - check-received-evm-events
       check-book-nfts:
-        resources: {}
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "20Mi"
         tasks:
           - check-book-nfts
           - acquire-book-nft-events-with-lifecycle
       process-evm-event:
-        resources: {}
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "10Mi"
         tasks:
           - process-evm-event
       index-action-request:
-        resources: {}
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "10Mi"
         tasks:
           - index-action-check-book-nft
           - index-action-check-like-protocol
       index-action-process-evm-event:
-        resources: {}
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "10Mi"
         tasks:
           - index-action-process-evm-event
           - index-action-check-received-evm-events
@@ -177,13 +216,19 @@ likenftIndexer:
         cron: "*/1 * * * *"
         tasks:
           - check-received-evm-events
-        resources: {}
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "10Mi"
       check-contracts:
         cron: "*/15 * * * *"
         tasks:
           - check-book-nfts
           - check-like-protocol
-        resources: {}
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "10Mi"
 
 likecollectiveIndexer:
   enabled: true
@@ -207,16 +252,25 @@ likecollectiveIndexer:
       tls:
         secretName: tls-likecollective-indexer
 
-    resources: {}
+    resources:
+      requests:
+        cpu: "10m"
+        memory: "10Mi"
 
   worker:
     deployments:
       periodic:
-        resources: {}
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "10Mi"
         tasks:
           - check-received-evm-events
       process-evm-event:
-        resources: {}
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "10Mi"
         tasks:
           - process-evm-event
 
@@ -226,7 +280,10 @@ likecollectiveIndexer:
         cron: "*/1 * * * *"
         tasks:
           - check-received-evm-events
-        resources: {}
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "10Mi"
 
   timescaleDb:
     container:
@@ -241,7 +298,10 @@ likecollectiveIndexer:
       storage: 30Gi
       storageClass: standard-rwo
 
-    resources: {}
+    resources:
+      requests:
+        cpu: "10m"
+        memory: "250Mi"
 
 redis:
   name: redis
@@ -253,7 +313,10 @@ redis:
   service:
     port: 6379
 
-  resources: {}
+  resources:
+    requests:
+      cpu: "10m"
+      memory: "10Mi"
 
 nginx:
   name: nginx
