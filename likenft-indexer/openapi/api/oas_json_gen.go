@@ -381,9 +381,15 @@ func (s *BookNFT) encodeFields(e *jx.Encoder) {
 			s.Owner.Encode(e)
 		}
 	}
+	{
+		if s.TokenID.Set {
+			e.FieldStart("token_id")
+			s.TokenID.Encode(e)
+		}
+	}
 }
 
-var jsonFieldsNameOfBookNFT = [16]string{
+var jsonFieldsNameOfBookNFT = [17]string{
 	0:  "id",
 	1:  "address",
 	2:  "name",
@@ -400,6 +406,7 @@ var jsonFieldsNameOfBookNFT = [16]string{
 	13: "minted_at",
 	14: "updated_at",
 	15: "owner",
+	16: "token_id",
 }
 
 // Decode decodes BookNFT from json.
@@ -407,7 +414,7 @@ func (s *BookNFT) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode BookNFT to nil")
 	}
-	var requiredBitSet [2]uint8
+	var requiredBitSet [3]uint8
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
@@ -607,6 +614,16 @@ func (s *BookNFT) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"owner\"")
 			}
+		case "token_id":
+			if err := func() error {
+				s.TokenID.Reset()
+				if err := s.TokenID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"token_id\"")
+			}
 		default:
 			return d.Skip()
 		}
@@ -616,9 +633,10 @@ func (s *BookNFT) Decode(d *jx.Decoder) error {
 	}
 	// Validate required fields.
 	var failures []validate.FieldError
-	for i, mask := range [2]uint8{
+	for i, mask := range [3]uint8{
 		0b11101111,
 		0b01111101,
+		0b00000000,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -3401,6 +3419,39 @@ func (s OptString) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptString) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes Uint64 as json.
+func (o OptUint64) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	o.Value.Encode(e)
+}
+
+// Decode decodes Uint64 from json.
+func (o *OptUint64) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptUint64 to nil")
+	}
+	o.Set = true
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptUint64) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptUint64) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }

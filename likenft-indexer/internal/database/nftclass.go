@@ -16,6 +16,11 @@ import (
 	"entgo.io/ent/dialect/sql"
 )
 
+type NFTClassWithNFTID struct {
+	NFTClass *ent.NFTClass
+	NFTID    *typeutil.Uint64
+}
+
 type NFTClassRepository interface {
 	QueryAllNFTClasses(ctx context.Context) ([]*ent.NFTClass, error)
 	QueryAllNFTClassesOfLowestEventBlockHeight(
@@ -33,13 +38,13 @@ type NFTClassRepository interface {
 		contractLevelMetadataNEQ ContractLevelMetadataFilterEquatable,
 		pagination NFTClassPagination,
 	) (nftClasses []*ent.NFTClass, count int, nextKey int, err error)
-	QueryNFTClassesByAccountTokens(
+	QueryNFTClassesByAccountTokensWithNFTID(
 		ctx context.Context,
 		accountEvmAddress string,
 		contractLevelMetadataEQ ContractLevelMetadataFilterEquatable,
 		contractLevelMetadataNEQ ContractLevelMetadataFilterEquatable,
 		pagination NFTClassPagination,
-	) (nftClasses []*ent.NFTClass, count int, nextKey int, err error)
+	) (nftClasses []*NFTClassWithNFTID, count int, nextKey int, err error)
 	QueryNFTClassesByEvmAddress(
 		ctx context.Context,
 		accountEvmAddress string,
@@ -207,6 +212,76 @@ func (r *nftClassRepository) QueryNFTClassesByAccountTokens(
 	}
 
 	return nftClasses, count, nextKey, nil
+}
+
+func (r *nftClassRepository) QueryNFTClassesByAccountTokensWithNFTID(
+	ctx context.Context,
+	accountEvmAddress string,
+	contractLevelMetadataEQ ContractLevelMetadataFilterEquatable,
+	contractLevelMetadataNEQ ContractLevelMetadataFilterEquatable,
+	pagination NFTClassPagination,
+) (nftClasses []*NFTClassWithNFTID, count int, nextKey int, err error) {
+	q := r.dbService.Client().NFTClass.Query().
+		Where(
+			nftclass.HasNftsWith(
+				nft.OwnerAddressEqualFold(accountEvmAddress),
+			),
+		)
+
+	q = contractLevelMetadataEQ.ApplyEQ(q)
+	q = contractLevelMetadataNEQ.ApplyNEQ(q)
+
+	count, err = q.Count(ctx)
+	if err != nil {
+		return nil, 0, 0, err
+	}
+
+	q = pagination.HandlePagination(q)
+
+	classes, err := q.All(ctx)
+	if err != nil {
+		return nil, 0, 0, err
+	}
+
+	classAddresses := make([]string, len(classes))
+	for i, c := range classes {
+		classAddresses[i] = c.Address
+	}
+
+	nfts, err := r.dbService.Client().NFT.Query().
+		Where(
+			nft.And(
+				nft.ContractAddressIn(classAddresses...),
+				nft.OwnerAddressEqualFold(accountEvmAddress),
+			),
+		).
+		All(ctx)
+	if err != nil {
+		return nil, 0, 0, err
+	}
+
+	nftIDMap := make(map[string]*typeutil.Uint64)
+	for _, n := range nfts {
+		if _, exists := nftIDMap[n.ContractAddress]; !exists {
+			nftID := typeutil.Uint64(n.TokenID)
+			nftIDMap[n.ContractAddress] = &nftID
+		}
+	}
+
+	result := make([]*NFTClassWithNFTID, len(classes))
+	for i, c := range classes {
+		result[i] = &NFTClassWithNFTID{
+			NFTClass: c,
+			NFTID:    nftIDMap[c.Address],
+		}
+	}
+
+	nextKey = 0
+	if len(classes) > 0 {
+		nextKey = classes[len(classes)-1].ID
+	}
+
+	return result, count, nextKey, nil
 }
 
 func (r *nftClassRepository) QueryNFTClassesByEvmAddress(
