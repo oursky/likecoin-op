@@ -1,3 +1,7 @@
+DROP MATERIALIZED VIEW book_nft_delta_time_bucket_1y;
+DROP MATERIALIZED VIEW book_nft_delta_time_bucket_30d;
+DROP MATERIALIZED VIEW book_nft_delta_time_bucket_7d;
+
 -- 7d
 
 CREATE MATERIALIZED VIEW book_nft_delta_time_bucket_7d
